@@ -1,0 +1,243 @@
+.x-identifypanel.x-tab-panel {
+  background-color: #4E78B1;
+  border: solid 15px #4E78B1;
+}
+.x-tab-panel-left .x-tab-panel-header,
+.x-tab-panel-right .x-tab-panel-header {
+  float: left;
+  border: 0;
+  background: transparent;
+}
+.x-tab-panel-right .x-tab-panel-header {
+  float:right;
+}
+.x-tab-panel-left .x-tab-panel-bwrap {
+  float: right;
+  position: relative;
+}
+.x-tab-panel-right .x-tab-panel-bwrap {
+  float: left;
+  position: relative;
+}
+.x-tab-panel-left ul.x-tab-strip,
+.x-tab-panel-right ul.x-tab-strip {
+  width: auto;
+}
+.x-tab-panel-left ul.x-tab-strip li,
+.x-tab-panel-right ul.x-tab-strip li {
+  padding: 6px 0 2px 6px;
+  float: none;
+  margin: 0;
+  position: relative;
+  clear: both;
+}
+.x-tab-panel-left .x-tab-panel-header ul.x-tab-strip a.x-identifypanel-text,
+.x-tab-panel-right .x-tab-panel-header ul.x-tab-strip a.x-identifypanel-text{
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.x-tab-panel-left .x-tab-panel-header ul.x-tab-strip a.x-identifypanel-text{
+  padding-left: 18px;
+}
+.x-tab-panel-right .x-tab-panel-header ul.x-tab-strip a.x-identifypanel-text{
+  padding-right: 18px;
+}
+
+.x-tab-panel-left .x-tab-panel-header ul.x-identifypanel-sub a.x-identifypanel-text,
+.x-tab-panel-right .x-tab-panel-header ul.x-identifypanel-sub a.x-identifypanel-text{
+  font-size: 12px;
+  padding: 0;
+}
+
+.x-tab-panel-left .x-tab-panel-header ul.x-identifypanel-sub a.x-identifypanel-text{
+  margin-left: 4px;
+}
+.x-tab-panel-right .x-tab-panel-header ul.x-identifypanel-sub a.x-identifypanel-text{
+  margin-right: 4px;
+}
+
+.x-identifypanel .x-tab-strip a.x-identifypanel-text,
+.x-tab-strip span.x-identifypanel-tab-strip-text {
+  overflow: hidden;
+  white-space: normal;
+  display: block;
+  color: #DFE8F6;
+  font-family: tahoma, arial, sans-serif;
+  font-weight: bold;
+  text-decoration: none;
+  padding-right: 3px;
+}
+.x-tab-panel-right .x-tab-strip a.x-identifypanel-text {
+  text-align: right;
+}
+
+.x-identifypanel .x-tab-strip-active a.x-identifypanel-text,
+.x-tab-strip-active span.x-identifypanel-tab-strip-text {
+  color: #395B8E;
+}
+
+.x-identifypanel ul.x-identifypanel-sub a.x-identifypanel-text {
+  font-weight: normal;
+}
+.x-tab-joint {
+  position: absolute;
+  width: 3px;
+  top: 1px;
+  background: #fff;
+  z-index: 9999;
+}
+
+.x-identifypanel .x-tab-panel-body {
+  border: 1px solid #999;
+}
+
+.x-identifypanel ul.x-tab-strip li {
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  border-left: 1px solid transparent;
+}
+
+.x-identifypanel ul.x-tab-strip li.x-tab-strip-active {
+  border: 0;
+  background: #fff;
+  border-top: 1px solid #999;
+  border-bottom: 1px solid #999;
+}
+
+.x-tab-panel-left ul.x-tab-strip li.x-tab-strip-active {
+  border-left: 1px solid #999;
+}
+.x-tab-panel-right ul.x-tab-strip li.x-tab-strip-active {
+  border-right: 1px solid #999;
+}
+
+.x-identifypanel li.x-tab-strip-active ul.x-identifypanel-sub li.x-tab-strip-active{
+  background-color: #EDEEF0;
+}
+
+.x-identifypanel li.x-tab-strip-active ul.x-identifypanel-sub {
+  background-color: transparent;
+}
+
+.x-identifypanel li.x-tab-strip-active ul.x-identifypanel-sub li {
+  border-color: transparent;
+}
+
+/* Tab corners */
+.x-identifypanel .x-identifypanel-corner {
+  background-image: url('images/x-identifypanel-corners.gif');
+  display: none;
+  width: 11px;
+  height: 11px;
+  position: absolute;
+  font-size: 1px;
+  line-height: 6px;
+  overflow: hidden;
+  zoom:1;
+}
+.x-identifypanel .x-tab-strip-active .x-identifypanel-corner {
+  display: block;
+}
+.x-identifypanel .x-identifypanel-main.x-tab-strip-active ul.x-identifypanel-sub .x-identifypanel-corner {
+  display: none;
+}
+
+.x-identifypanel .x-identifypanel-corner-top-left {
+  background-position: top left;
+  left: 0; top: 0;
+}
+.x-identifypanel .x-identifypanel-corner-bottom-left {
+  background-position: bottom left;
+  left: 0; bottom: 0;
+}
+.x-identifypanel .x-identifypanel-corner-top-right {
+  background-position: top right;
+  right: 0; top: 0;
+}
+.x-identifypanel .x-identifypanel-corner-bottom-right {
+  background-position: bottom right;
+  right: 0; bottom: 0;
+}
+.x-identifypanel li.x-tab-strip-active .x-identifypanel-corner-bottom-left{
+  bottom: -4px; left: -4px;
+}
+.x-identifypanel li.x-tab-strip-active .x-identifypanel-corner-bottom-right{
+  bottom: -4px; right: -4px;
+}
+.x-identifypanel li.x-tab-strip-active .x-identifypanel-corner-top-left{
+  top: -4px; left: -4px;
+}
+.x-identifypanel li.x-tab-strip-active .x-identifypanel-corner-top-right{
+  top: -4px; right: -4px;
+}
+
+.x-identifypanel ul.x-identifypanel-sub li.x-tab-with-icon a.x-identifypanel-text {
+  background-repeat: no-repeat;
+  padding-left: 20px;
+}
+
+/* General tab styling */
+.x-identifypanel .x-identifypanel-expand {
+  background: transparent url('images/elbow-plus-nl.gif') no-repeat;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 7px;
+  top: 6px;
+}
+
+.x-identifypanel-expanded .x-identifypanel-expand {
+  background-image: url('images/elbow-minus-nl.gif');
+}
+
+/* GroupTabs sub group styling */
+.x-identifypanel-sub {
+  display: none;
+  margin-top: 4px;
+}
+
+.x-identifypanel-expanded .x-identifypanel-sub {
+  display: block;
+}
+
+.x-identifypanel ul.x-identifypanel-sub li {
+  height: 14px;
+  margin: 0 0 5px 0;
+  padding: 0;
+}
+
+.x-identifypanel ul.x-identifypanel-sub .x-identifypanel-main-item {
+  display: none;
+}
+
+.x-tab-with-icon{
+  border-style:none !important;
+}
+
+.x-identify-results-panel ul.x-tab-strip li.x-tab-strip-active {
+  border: none;
+}
+
+.x-identify-results-panel ul.x-tab-strip {
+  width: 5000px;
+}
+.x-tab-panel-left  .x-identify-results-panel ul.x-tab-strip li,
+.x-tab-panel-right .x-identify-results-panel ul.x-tab-strip li {
+  float: left;
+  clear: none;
+  margin-left: 2px;
+  padding: 0;
+}
+
+.x-identify-results-panel .x-tab-strip-top .x-tab-strip-active .x-tab-right span.x-tab-strip-text {
+  padding-top: 6px;
+}
+
+a.highlight-feature {
+  color: #00f;
+  text-decoration: none;
+}
+a.highlight-feature:hover {
+  color: red;
+}
