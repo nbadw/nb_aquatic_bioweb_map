@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>New Brunswick Aquatic Bio-Web</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <!-- STYLESHEETS -->
+    <link rel="stylesheet" type="text/css" href="./vendor/ext-3.0.0/resources/css/ext-all.css" />
+    <link type="text/css" rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/1.3/js/dojo/dijit/themes/tundra/tundra.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/application.css" />
+    <link rel="stylesheet" type="text/css" href="./css/grouptabs.css" />
+    <!-- END STYLESHEETS -->
+
+    <!-- JAVASCRIPTS -->
+    <script type="text/javascript" src="./vendor/ext-3.0.0/adapter/ext/ext-base-debug.js"></script>
+    <script type="text/javascript" src="./vendor/ext-3.0.0/ext-all-debug.js"></script>
+    <script type="text/javascript" src="./vendor/esri/arcgis-1.4-debug.js"></script>
+    <script type="text/javascript" src="./vendor/proj4js/lib/proj4js-combined.js"></script>
+
+    <script type="text/javascript" src="./js/core.js"></script>
+
+    <script type="text/javascript" src="./js/atlas/esri/Map.js"></script>
+    <script type="text/javascript" src="./js/atlas/esri/Layer.js"></script>
+    <script type="text/javascript" src="./js/atlas/FindPanel.js"></script>
+    <script type="text/javascript" src="./js/atlas/MapPanel.js"></script>
+    <script type="text/javascript" src="./js/atlas/tree/LayerNode.js"></script>
+    <script type="text/javascript" src="./js/atlas/ContentsInfoWindow.js"></script>
+    <script type="text/javascript" src="./js/atlas/MapContents.js"></script>
+    <script type="text/javascript" src="./js/atlas/IdentifyPanel.js"></script>
+
+    <script type="text/javascript" src="./js/application.js"></script>
+    <script type="text/javascript">
+      dojo.config.isDebug = true;
+    </script>
+    <!-- END JAVASCRIPT -->
+
+  </head>
+  <body id="application" class="tundra">
+    <div id="header">
+      <h1>New Brunswick Aquatic Bio-Web</h1>
+      <a href="#" id="disclaimer-btn">disclaimer</a>
+      <a href="#" id="help-btn">help</a>
+    </div>
+
+    <div id="map">
+      <div id="measurement-length-info" class="x-hidden"></div>
+      <div id="map-info"></div>
+    </div>
+
+    <div id="disclaimer-win" class="x-hidden">
+      <div class="x-window-header">Terms &amp; Conditions</div>
+      <div class="x-window-body">
+        <b>IMPORTANT! Your access to this portion of the website is subject to legally binding terms and conditions. Carefully read all of the following terms and conditions before proceeding. CLICKING THE "I ACCEPT" BUTTON BELOW IS THE EQUIVALENT OF YOUR SIGNATURE AND INDICATES YOUR ACCEPTANCE OF THESE TERMS AND CONDITIONS AND THAT YOU INTEND TO BE LEGALLY BOUND BY THEM. If you do not agree with these terms and conditions, please click on the "I DECLINE" button below. <br>
+          <br><br>
+          THIS AGREEMENT </b> is made by and between you (the "Licensee") and the New Brunswick Aquatic Data Warehouse (the "Licensor"), Box 4400, Fredericton, NB, The effective date of this Agreement is when you, the Licensee, accept this Agreement in accordance with the procedure set out above.
+        <br><br>The Licensor is the authorized repository of New Brunswick aquatic and fisheries data compiled from government, public and private sources. The data ownership is retained by its originating agency, but the Licensor is authorized to disseminate such data.
+        <br><br><br>
+        <b>1. RIGHTS GRANTED</b>
+
+        <br><br>Licensor grants to the Licensee a personal, non-exclusive and non-transferable right to use the  products and data accessed via this website (hereinafter the "licensed Data") until such time as this Agreement is terminated pursuant to Section 6 hereof or otherwise expires.
+        <br><br><b>1.1 Ownership and Copyright</b> - The Licensee acknowledges that any and all information, content, reports, data, databases, graphics, interfaces, web pages, text, files, software, product names, company names, trade-marks, logos and trade names contained on this web site (collectively the "Content") including the manner in which the Content is presented or appears and all information relating thereto, are the property of their respective owners as indicated, the Licensor or others, as the case may be.
+        <br><br><b>1.2 Restrictions on use</b> - The Licensed Data are solely and exclusively for the internal use of the Licensee and not for the use by any other person or entity, including, but not limited to, any entity which is affiliated with the Licensee unless specifically included in the term License.
+        <br><br><b>1.3 Permitted Use</b>
+        <br><br><b>a. Copies.</b> The Licensee may copy Licensed Data only for backup purposes and not for use by any other person.
+        <br><br><b>b. Equipment.</b> Licensed data may be used only on computer equipment owned or leased by the Licensee.
+        <br><br><b>c. Derived Products. </b>Graphic displays and printed tabular listings derived from Licensed Data and/or the Content may be used in publications and presentations, provided that credit is given to the Licensor as the custodian of the Licensed Data and/or Content and credit is also given to the original source of the data if other than the Licensor.
+
+        <br><br><b>1.4 Prohibited Use</b>
+        <br><br><b>a. Unauthorized Distribution.</b> Any sale, distribution, loan, or offering for use of Licensed Data, in whole or in part, is prohibited without the prior written approval of the Licensor.
+        <br><br><b>b. Reproduction of Products.</b> The reproduction of hardcopy of the Licensed Data with the intent to sell for a profit is prohibited without the prior written approval of the Licensor.
+        <br><br><b>2. ASSIGNMENT</b>
+        <br><br><b>2.1 No Assignment</b> - This Agreement may not be assigned by the Licensee without the prior written approval of the Licensor; the permitted assignee thereof shall have all the rights and remedies of the original Licensee insofar as the same are assignable. Assignment shall be only as a whole and not as a part, nor as to any part interest therein.
+        <br><br><b>3. INDEMNIFICATION</b>
+        <br><br><b>3.1 Indemnification</b> - Licensee agrees to hold the Licensor. the Canadian Rivers Institute and the University of New Brunswick, and all their employees, and agents harmless from any claim, suit, or proceeding arising out of the use of the Licensed Data in accordance with this Agreement, including indemnification of the Licensor and the University of New Brunswick for reasonable expenses incurred in defending such claims.
+
+        <br><br><b>4. WARRANTIES AND LIABILITIES</b>
+        <br><br><b>4.1 Warranties and Liabilities </b>- Neither the Licensor nor the owner(s) of these data make any warranty, expressed or implied, as to the use or appropriateness of use of the Licensed Data, and there are no warranties of merchantability or fitness for a particular purpose or use. The information contained in the licensed data is from publicly available sources, but no representation is made as to the accuracy or completeness thereof. The Licensor shall not be subject to liability for human errors, defect or failure of machines, or any material used in the connection with the machines, including, but not limited to, tapes, disks, punch cards and energy. The Licensor shall not be liable for any lost profits or consequential damages, or claims against the Licensee by Third parties. The liability of the Licensor for damages, regardless of the form of the action, shall not exceed the License fee paid for the Licensed Data.
+        <br><br><b>5. TERMINATION</b>
+        <br><br><b>5.1 Termination </b>- In the event that the Licensee shall not faithfully perform any and all of the obligations by the Licensee to be performed under this License, the Licensor shall have the right to terminate and cancel this License. Cancellation by the Licensor shall not release the Licensee from its obligation to pay any fees due herein. All such data, disks, manuals, and printed materials furnished either directly or indirectly by the Licensor shall be and remain the property of the Licensor; and the Licensee shall at its own expense return all the Licensed Data to the Licensor when and if directed upon termination.
+
+        <br><br><b>5.2 Causes for Termination</b> - The Licensor shall have the right to terminate this Agreement if: (a) Licensee attempts to assign its rights without the written approval of the Licensor; (b) if Licensee delivers or attempts to deliver the Licensed Data to another agency, corporation, or person without the prior written approval of the Licensor.
+        <br><br><b>6. REMEDIES</b>
+        <br><br><b>6.1 Breach or Threatened Breach</b> - In the event of a breach or threatened breach of any of the provisions of this Agreement by the Licensee or any employee, representative or agent of the Licensee, Licensor shall be entitled to preliminary and permanent injunctive relief to enforce the provisions hereof; but nothing shall preclude Licensor from pursuing any action or other remedy, including for damages, for any breach or threatened breach of this Agreement, all of which shall be cumulative. In the event that Licensor prevails in any such action, Licensor shall be entitled to recover from the Licensee all attorney's fees incurred in connection therewith.
+        <br><br><b>7.0 BINDING</b>
+
+        <br><br><b>7.1 Acknowledgement </b>- The Licensee acknowledges that this Agreement has been read and agrees to be bound by its terms, and further agrees that it is the complete and exclusive statement of the agreement between the parties and supersedes any oral or written communications or representations relating hereto.
+        <br><br><b>7.2 Authority</b> - Persons whose signatures appear as or for Licensee on the Data Request Form represent that they are authorized to do so and represent and warrant that this Licensing Agreement is a legal, valid and binding obligation as to Licensee and is enforceable in accordance with its terms.
+        <br><br><b>8. ADDITIONAL PROVISIONS</b>
+        <br><br><b>8.1 Laws of the Province of New Brunswick</b> - This Agreement shall be governed by the laws of the Province of New Brunswick and the parties hereby submit to the jurisdiction of the courts of the Province of New Brunswick. This Agreement represents the entire agreement between the parties with respect to the subject matter hereof. This Agreement shall not be modified except in writing signed by the parties. Waiver of any breach of the terms and conditions in this Agreement shall not be deemed to constitute a waiver of any other or future breach.
+      </div>
+    </div>
+
+    <div id="help-win" class="x-hidden">
+      <div class="x-window-header">Help</div>
+      <div class="x-window-body">
+        Help Contents...
+      </div>
+    </div>
+
+    <div class="x-hidden">
+      <iframe id="downloads"></iframe>
+    </div>
+
+
+  </body>
+</html>
