@@ -5,7 +5,7 @@ require 'capistrano'
 Capistrano::Configuration.instance.load do
   _cset( :jboss_daemon_manager, :daemontools )
   _cset( :jboss_service_directory ) { "/service/#{application}" }
-  _cset( :jboss_service_name, :jboss )
+  _cset( :jboss_service_name, :torquebox )
   _cset( :rack_env, 'production' )
 
 
@@ -67,15 +67,18 @@ Capistrano::Configuration.instance.load do
       run cmd
     end
 
-    #desc "Emit #{application}-rails.yml"
+    desc "Emit #{application}-rails.yml"
     task :deployment_descriptor do
       puts "creating deployment descriptor"
 
       dd = {
-        'application'=>{
-          'RACK_ROOT'=>"#{latest_release}",
-          'RACK_ENV' =>"#{rack_env}"
+        'application'=> {
+          'RACK_ROOT'=> "#{latest_release}",
+          'RACK_ENV' => "#{rack_env}"
         },
+        'web' => { 
+        	'context' => '/'
+        }
       }
 
       dd_str = YAML.dump_stream( dd )

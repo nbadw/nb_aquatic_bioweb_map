@@ -7,7 +7,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     this.tbar = [
     {
       id: 'zoom-in',
-      icon: '/images/zoom-in2.png',
+      icon: './images/zoom-in2.png',
       tooltip: 'Zoom In (Ctrl + Click and drag mouse over map)',
       enableToggle: true,
       scale: 'medium',
@@ -19,7 +19,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     },
 
     {
-      icon: '/images/full-extent2.png',
+      icon: './images/full-extent2.png',
       tooltip: 'Zoom To Full Extent',
       scale: 'medium',
       handler: function() {
@@ -30,7 +30,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
 
     {
       id: 'identify',
-      icon: '/images/query.png',
+      icon: './images/query.png',
       tooltip: 'Identify',
       enableToggle: true,
       scale: 'medium',
@@ -42,7 +42,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     },
 
     {
-      icon: '/images/search.png',
+      icon: './images/search.png',
       tooltip: 'Find a place',
       scale: 'medium',
       handler: this.showFindWindow,
@@ -51,7 +51,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
 
     {
       id: 'measure',
-      icon: '/images/ruler.png',
+      icon: './images/ruler.png',
       tooltip: 'Measure',
       enableToggle: true,
       scale: 'medium',
@@ -64,7 +64,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
 
     {
       id: 'print-pdf',
-      icon: '/images/page_white_acrobat.png',
+      icon: './images/page_white_acrobat.png',
       tooltip: 'Export Map as PDF',
       scale: 'medium',
       handler: this.showExportPdfWindow,
@@ -75,7 +75,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     this.bbar = [
     {
       id: 'mapInfo',
-      icon: '/images/world.png',
+      icon: './images/world.png',
       listeners: {
         mouseout: function() {
         //this.mapInfo.hide();

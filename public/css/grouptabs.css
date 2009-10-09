@@ -126,7 +126,7 @@
 
 /* Tab corners */
 .x-identifypanel .x-identifypanel-corner {
-  background-image: url('images/x-identifypanel-corners.gif');
+  background-image: url('../images/x-identifypanel-corners.gif');
   display: none;
   width: 11px;
   height: 11px;
@@ -179,7 +179,7 @@
 
 /* General tab styling */
 .x-identifypanel .x-identifypanel-expand {
-  background: transparent url('images/elbow-plus-nl.gif') no-repeat;
+  background: transparent url('../images/elbow-plus-nl.gif') no-repeat;
   width: 16px;
   height: 16px;
   position: absolute;
@@ -188,7 +188,7 @@
 }
 
 .x-identifypanel-expanded .x-identifypanel-expand {
-  background-image: url('images/elbow-minus-nl.gif');
+  background-image: url('../images/elbow-minus-nl.gif');
 }
 
 /* GroupTabs sub group styling */
