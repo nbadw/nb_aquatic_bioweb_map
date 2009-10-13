@@ -122,12 +122,12 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
   },
 
   buildLegendInfoNode: function(layer, legendInfo) {
-    var targetLayerInfoNode = this.findLayerInfoNode(layer.id, legendInfo.layerID);
-    var legendGroup = legendInfo.legendGroups[0];
-    if(legendGroup.legendClasses.length == 1) {
-      targetLayerInfoNode.attributes.symbolImage = legendGroup.legendClasses[0].symbolImage;
+    var targetLayerInfoNode = this.findLayerInfoNode(layer.id, legendInfo['layer_id']);
+    var legendGroup = legendInfo['legend_groups'][0];
+    if(legendGroup['legend_classes'].length == 1) {
+      targetLayerInfoNode.attributes.symbolImage = legendGroup['legend_classes'][0]['symbol_image'];
     } else {
-      Ext.each(legendGroup.legendClasses, function(legendClass) {
+      Ext.each(legendGroup['legend_classes'], function(legendClass) {
         this.buildLegendClassNode(targetLayerInfoNode, legendClass);
       }, this);
     }
@@ -135,7 +135,7 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
 
   addLegendToLayerInfo: function(layerInfoNode, symbolImage) {
     var attrs = Ext.apply(layerInfoNode.attributes, {
-      icon: symbolImage.imageURL
+      icon: symbolImage.image_url
     });
     var replacementNode = new Ext.tree.TreeNode(attrs);
     layerInfoNode.parentNode.replaceChild(replacementNode, layerInfoNode);
@@ -143,9 +143,9 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
 
   buildLegendClassNode: function(layerInfoNode, legendClass) {
     layerInfoNode.appendChild(new Ext.tree.TreeNode({
-      text: legendClass.label,
-      qtip: legendClass.description,
-      symbolImage: legendClass.symbolImage,
+      text: legendClass['label'],
+      qtip: legendClass['description'],
+      symbolImage: legendClass['symbol_image'],
       legendClass: legendClass,
       uiProvider: Atlas.MapContentsNodeUI,
       type: 'LegendClassNode'
@@ -249,8 +249,8 @@ Atlas.MapContentsNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
       var iconEl = Ext.fly(this.getIconEl());
 
       var w = 16; var h = 16; // or resize width if necessary
-      if(symbol.imageHeight != symbol.imageWidth) {
-        w = (symbol.imageWidth * h) / symbol.imageHeight;
+      if(symbol['image_height'] != symbol['image_width']) {
+        w = (symbol['image_width'] * h) / symbol['image_height'];
       }
 
       iconEl.applyStyles({
@@ -258,7 +258,7 @@ Atlas.MapContentsNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
         height: h + 'px',
         width:  w + 'px'
       });
-      iconEl.dom.src = attrs.symbolImage.imageURL;
+      iconEl.dom.src = attrs.symbolImage['image_url'];
     }
   }
 });

@@ -47,7 +47,7 @@ Ext.extend(Atlas.esri.Layer, Ext.util.Observable, {
   requestLegend: function() {
     Ext.Ajax.request({
       url: '/legends',
-      params: { rest_url: this.url },
+      params: { url: this.url },
       success: function(response, options) {
         this.legend = Ext.decode(response.responseText);
         this.legendLoaded = true;

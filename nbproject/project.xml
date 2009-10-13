@@ -8,6 +8,7 @@
                 <root id="src.config.dir"/>
                 <root id="src.public.dir"/>
                 <root id="src.vendor.dir"/>
+                <root id="src.logs.dir"/>
             </source-roots>
             <test-roots/>
         </data>
