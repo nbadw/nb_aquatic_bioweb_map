@@ -1,3 +1,7 @@
+Context = {
+  path: '/nb_aquatic_bioweb_map'
+};
+
 Application = {
   init: function() {
     console.log('initializing map application ui');

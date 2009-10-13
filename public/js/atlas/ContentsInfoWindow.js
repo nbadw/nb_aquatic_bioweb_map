@@ -46,7 +46,7 @@ Atlas.ContentsInfoWindow = Ext.extend(Ext.Window, {
     }
 
     Ext.Ajax.request({
-      url: '/info',
+      url: Context.path + '/info',
       params: { url: infoUrl },
       success: function(response) {
         this.cache[node] = Ext.decode(response.responseText);

@@ -210,7 +210,7 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
       items: [{
         text: 'About',
         id: 'btn-information',
-        icon: '/images/information.png',
+        icon: './images/information.png',
         tooltip: 'Click for information on the selected layer',
         handler: this.showContentsInfoWindow,
         scope: this
