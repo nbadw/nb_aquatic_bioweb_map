@@ -5,11 +5,11 @@ require 'cgns_search'
 require 'arcgis_server_rest_proxy'
 require 'map_server_legend_info'
 
-map "/info" do
+map "/nb_aquatic_bioweb_map/info" do
   run ArcgisServerRestProxy.new
 end
 
-map "/places" do
+map "/nb_aquatic_bioweb_map/places" do
   run CgnsSearch.new
 end
 
