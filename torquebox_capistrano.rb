@@ -77,7 +77,7 @@ Capistrano::Configuration.instance.load do
           'RACK_ENV' => "#{rack_env}"
         },
         'web' => { 
-        	'context' => '/'
+        	'context' => "/#{application}"
         }
       }
 
