@@ -1,11 +1,7 @@
 set :application,  "nb_aquatic_bioweb_map"
 set :user,         "colin"
 set :use_sudo,     false
-
-# torquebox settings
-set :jboss_home,   "/opt/torquebox/torquebox-current/jboss"
-set :jboss_config, :default
-set :deploy_to,    "/var/www/apps/#{application}"
+set :deploy_to,    "/home/colin/deploy/#{application}"
 
 # svn settings
 set :scm,          :subversion

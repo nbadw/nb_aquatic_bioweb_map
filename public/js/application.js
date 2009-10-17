@@ -1,5 +1,5 @@
 Context = {
-  path: '/nb_aquatic_bioweb_map'
+  path: '.'
 };
 
 Application = {
