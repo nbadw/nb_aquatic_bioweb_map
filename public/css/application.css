@@ -28,9 +28,10 @@
 #disclaimer-btn {
   position: absolute;
   right: 5px;
-  top: 2px;
+  top: 16px; /* 2px; */
 }
 #help-btn {
+  display: none;
   position: absolute;
   right: 5px;
   top: 16px;
@@ -124,3 +125,16 @@
   display: none;
 }
 /* END MAP INFO */
+
+/* PLACE NAME SEARCH */
+.no-placename-results-panel,
+#no-placename-results .x-panel-body {
+  background-color: #efefef;
+}
+#no-placename-results {
+  color: #111;
+  font-weight: bold;
+  font-size: 11px;
+  font-family: Verdana;
+}
+/* END PLACE NAME SEARCH */

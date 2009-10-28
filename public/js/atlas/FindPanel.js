@@ -25,15 +25,7 @@ Atlas.FindPanel = Ext.extend(Ext.Panel, {
       style: 'margin-bottom: 5px'
     });
 
-    placeNameSearchField.on('triggered', function(text) {
-      placeNameStore.load({
-        params: { geoname: text }
-      });
-    });
-
-    this.items = [
-    placeNameSearchField,
-    new Ext.grid.GridPanel({
+    var resultsGrid = new Ext.grid.GridPanel({
       flex: 1,
       store: placeNameStore,
       columns: [
@@ -76,8 +68,74 @@ Atlas.FindPanel = Ext.extend(Ext.Panel, {
         },
         scope: this
       }
-    })
-    ];
+    });
+
+    /* This triggers before render to setup mouseovers tooltips on grid. */
+    resultsGrid.on('render', function() {
+      resultsGrid.tip = new Ext.ToolTip({
+        view: resultsGrid.getView(),
+        target: resultsGrid.getView().mainBody,
+        delegate: '.x-grid3-row', // necessary
+        trackMouse: true,
+        renderTo: document.body,
+        listeners: {
+          beforeshow: function(tip) {
+            var i       = resultsGrid.getView().findRowIndex(tip.triggerElement);
+            var record  = resultsGrid.getStore().getAt(i);
+            var geoname = record.get('geoname');
+            tip.body.dom.innerHTML = "Click to place a marker for " + geoname + " on the map, double-click to zoom to its location";
+          }
+        }
+      });
+    });
+
+    this.resultsPanel = new Ext.Panel({
+      layout:'card',
+      activeItem: 0,
+      flex: 1,
+      items: [
+        resultsGrid,
+        new Ext.Panel({
+          bodyCssClass: 'no-placename-results-panel',
+          layout:'vbox',
+          layoutConfig: {
+              pack: 'center',
+              align: 'center'
+          },
+          items: {
+            id: 'no-placename-results',
+            html: 'No results found for search query.',
+            border: false
+          }
+        })
+      ]
+    });
+
+    this.items = [placeNameSearchField, this.resultsPanel];
+
+    placeNameSearchField.on('triggered', function(text) {
+      placeNameStore.load({
+        params: { geoname: text }
+      });
+    });
+
+    placeNameStore.on('beforeload', function(store, options) {
+      if(!this.loadingMask) {
+        this.loadingMask = new Ext.LoadMask(this.resultsPanel.body, { msg:"Searching..."});
+      }
+      this.loadingMask.show();
+    }, this);
+
+    placeNameStore.on('load', function(store, records, options) {
+      this.resultsPanel.getLayout().setActiveItem(0);
+      this.loadingMask.hide();      
+    }, this);
+
+    // an exception gets thrown when there are no results
+    placeNameStore.on('exception', function() {
+      this.resultsPanel.getLayout().setActiveItem(1);
+      this.loadingMask.hide();     
+    }, this);
 
     Atlas.FindPanel.superclass.initComponent.call(this);
   }

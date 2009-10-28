@@ -1,21 +1,45 @@
 Context = {
-  path: '.'
+  path: ''
 };
 
 Application = {
   init: function() {
     console.log('initializing map application ui');
+    this.fullExtent = new esri.geometry.Extent({
+      xmin: -69.3504643875024,
+      ymin: 42.84622,
+      xmax: -63.4013632447762,
+      ymax: 50.55837,
+      spatialReference: { wkid: 4326 }
+    });
+
     this.map = new Atlas.esri.Map('map', {
-      layers: [
-        {
+      layers: [{
           url: 'http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_Imagery_World_2D/MapServer',
           cached: true
-        },
-
-        {
-          url: 'http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer'
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/provinces_and_states/MapServer',
+          cached: true
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_01/MapServer',
+          cached: true
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/base_layers/MapServer',
+          cached: true
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/place_names/MapServer',
+          cached: true
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/stream_types/MapServer',
+          cached: true,
+          visible: false
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/temperature_logger_sites/MapServer',
+          cached: true,
+          visible: false
         }
-      ]
+      ],
+      extent: this.fullExtent
     });
 
     Ext.get('disclaimer-btn').on('click', this.showDisclaimerWindow, this);
@@ -65,11 +89,7 @@ Application = {
       autoScroll: true,
       modal: true,
       buttons: [{
-        text: 'Accept',
-        handler: this.hideDisclaimerWindow,
-        scope: this
-      }, {
-        text: 'Decline',
+        text: 'OK',
         handler: this.hideDisclaimerWindow,
         scope: this
       }]

@@ -23,7 +23,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
       tooltip: 'Zoom To Full Extent',
       scale: 'medium',
       handler: function() {
-        this.navigation.zoomToFullExtent();
+        this.zoomToFullExtent();
       },
       scope: this
     },
@@ -60,16 +60,16 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
         pressed ? this.enableMeasurement() : this.disableMeasurement();
       },
       scope: this
-    },
+    } //,
 
-    {
-      id: 'print-pdf',
-      icon: './images/page_white_acrobat.png',
-      tooltip: 'Export Map as PDF',
-      scale: 'medium',
-      handler: this.showExportPdfWindow,
-      scope: this
-    }
+//    {
+//      id: 'print-pdf',
+//      icon: './images/page_white_acrobat.png',
+//      tooltip: 'Export Map as PDF',
+//      scale: 'medium',
+//      handler: this.showExportPdfWindow,
+//      scope: this
+//    }
     ];
 
     this.bbar = [
@@ -395,6 +395,15 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     }
   },
 
+  zoomToFullExtent: function() {
+    var extent = Application.fullExtent;
+    if(!extent) {
+      this.navigation.zoomToFullExtent();
+    } else {
+      this.map.setExtent(extent);
+    }
+  },
+
   handleExtentHistoryChange: function() {
   // not yet implemented
   },
@@ -493,27 +502,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
           emptyText: 'Add a title...',
           fieldLabel: 'Title',
           name: 'title'
-        },
-        //        {
-        //          xtype: 'combo',
-        //          forceSelection: true,
-        //          fieldLabel: 'Paper Size',
-        //          name: 'page_size',
-        //          store: new Ext.data.ArrayStore({
-        //            fields: ['size', 'dimensions'],
-        //            data: [
-        //              ['A4', '?'],
-        //              ['Legal', '?']
-        //            ]
-        //          }),
-        //          width: 160,
-        //          displayField: 'size',
-        //          typeAhead: true,
-        //          mode: 'local',
-        //          triggerAction: 'all',
-        //          selectOnFocus:true,
-        //          value: 'A4' },
-        {
+        }, {
           xtype: 'radiogroup',
           fieldLabel: 'Page Orientation',
           columns: 1,

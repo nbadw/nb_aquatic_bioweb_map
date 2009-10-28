@@ -32,10 +32,14 @@ Ext.extend(Atlas.esri.Layer, Ext.util.Observable, {
       return new esri.layers.ArcGISDynamicMapServiceLayer(config);
     }
     else {
+      var options = { 
+        visible: config.visible,
+        opacity: config.opacity
+      };
       if(config.cached || config.tiled) {
-        return new esri.layers.ArcGISTiledMapServiceLayer(config.url);
+        return new esri.layers.ArcGISTiledMapServiceLayer(config.url, options);
       } else {
-        return new esri.layers.ArcGISDynamicMapServiceLayer(config.url);
+        return new esri.layers.ArcGISDynamicMapServiceLayer(config.url, options);
       }
     }
   },
