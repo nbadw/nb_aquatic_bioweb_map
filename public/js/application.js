@@ -27,8 +27,22 @@ Application = {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/base_layers/MapServer',
           cached: true
         }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/nb_roads/MapServer',
+          cached: true
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_01_boundary_lines/MapServer',
+          cached: true
+        }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/place_names/MapServer',
           cached: true
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/surveyed_lakes/MapServer',
+          cached: true,
+          visible: false
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/lake_depths/MapServer',
+          cached: true,
+          visible: false
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/stream_types/MapServer',
           cached: true,
