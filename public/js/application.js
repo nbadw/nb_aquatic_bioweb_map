@@ -1,5 +1,5 @@
 Context = {
-  path: ''
+  path: '/services'
 };
 
 Application = {
