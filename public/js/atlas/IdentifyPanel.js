@@ -97,21 +97,25 @@ Atlas.IdentifyPanel = Ext.extend(Ext.TabPanel, {
     loadingMask.show();
 
     Ext.each(map.__proxyOwner__.layers, function(layer) {
-      var task     = new esri.tasks.IdentifyTask(layer.url);
-      var params   = new esri.tasks.IdentifyParameters();
-      var layerInfos = layer.__proxy__.layerInfos;
+      if(layer.canIdentify()) { 
+        console.log('identify on ' + layer.title);
 
-      params.geometry = geometry;
-      params.mapExtent = map.extent;
-      params.tolerance = 3;
-      params.returnGeometry = true;
-      params.layerOption = esri.tasks.IdentifyParameters.LAYER_OPTION_VISIBLE;
-      params.layerIds = [];
-      Ext.each(layerInfos, function(layerInfo) {
-        params.layerIds.push(layerInfo.id);
-      });
+        var task     = new esri.tasks.IdentifyTask(layer.url);
+        var params   = new esri.tasks.IdentifyParameters();
+        var layerInfos = layer.__proxy__.layerInfos;
 
-      this.createIdentifyResultsTab(layer, task, params);
+        params.geometry = geometry;
+        params.mapExtent = map.extent;
+        params.tolerance = 3;
+        params.returnGeometry = true;
+        params.layerOption = esri.tasks.IdentifyParameters.LAYER_OPTION_VISIBLE;
+        params.layerIds = [];
+        Ext.each(layerInfos, function(layerInfo) {
+          params.layerIds.push(layerInfo.id);
+        });
+
+        this.createIdentifyResultsTab(layer, task, params);
+      }
     }, this);
 
     this.setActiveTab(this.getComponent(0));

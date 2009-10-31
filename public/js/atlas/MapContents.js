@@ -24,14 +24,7 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
     this.addEvents('ready');
     Atlas.MapContents.superclass.initComponent.call(this);
 
-    new Ext.tree.TreeSorter(this, {
-      folderSort: true,
-      dir: 'asc',
-      caseSensitive: false,
-      sortType: function(node) {
-        return node.attributes.layer ? node.attributes.layerId : node;
-      }
-    });
+    new Atlas.MapContentsTreeSorter(this);
 
     this.on('checkchange', function(node, checked) {
       this.toggleLayerVisible(node, checked);
@@ -122,8 +115,9 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
   },
 
   buildLegendInfoNode: function(layer, legendInfo) {
-    var targetLayerInfoNode = this.findLayerInfoNode(layer.id, legendInfo['layer_id']);
+    var targetLayerInfoNode = this.findLayerInfoNode(layer.id, legendInfo['layer_id']);    
     var legendGroup = legendInfo['legend_groups'][0];
+
     if(legendGroup['legend_classes'].length == 1) {
       targetLayerInfoNode.attributes.symbolImage = legendGroup['legend_classes'][0]['symbol_image'];
     } else {
@@ -142,6 +136,11 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
   },
 
   buildLegendClassNode: function(layerInfoNode, legendClass) {
+    // XXX: workaround to catch gradient legends
+    if(legendClass['label'] == null) {
+      layerInfoNode.attributes.gradientLegendInfoNode = true;
+    }
+
     layerInfoNode.appendChild(new Ext.tree.TreeNode({
       text: legendClass['label'],
       qtip: legendClass['description'],
@@ -172,8 +171,6 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
     if(!this.contentsInfoWindow) {
       this.contentsInfoWindow = this.createContentsInfoWindow();
     }
-
-    //var node = this.getSelectionModel().getSelectedNode();
     this.contentsInfoWindow.displayInfo(this.ctxNode);
   },
 
@@ -243,6 +240,9 @@ Atlas.MapContentsNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
     }
     // do the actual rendering
     Atlas.MapContentsNodeUI.superclass.renderElements.apply(this, arguments);
+    if(node.parentNode && node.parentNode.attributes.gradientLegendInfoNode) {
+      node.getUI().addClass('gradient-legend-node');
+    }
     // set and resize the custom icon if necessary
     if(attrs.symbolImage) {
       var symbol = attrs.symbolImage;
@@ -259,6 +259,29 @@ Atlas.MapContentsNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
         width:  w + 'px'
       });
       iconEl.dom.src = attrs.symbolImage['image_url'];
+    }
+  }
+});
+
+Atlas.MapContentsTreeSorter = Ext.extend(Ext.tree.TreeSorter, {
+  customSortFn: function(n1, n2) {
+    // folders are listed first
+    if(n1.childNodes.length > 0 || n2.childNodes.length > 0) {
+      if(n1.childNodes.length > 0 && n2.childNodes.length > 0) {
+        return (n1.text.toUpperCase() > n2.text.toUpperCase() ? 1 : -1);
+      } else {
+        // this ensures that folders are listed first
+        return (n1.childNodes.length > 0 ? -1 : 1);
+      } 
+    } else {
+      return (n1.text.toUpperCase() > n2.text.toUpperCase() ? 1 : -1);
+    }
+  },
+
+  doSort: function(node) {
+    // only sort if node doesn't have gradient legends!
+    if(!node.attributes.gradientLegendInfoNode) {
+      node.sort(this.customSortFn);
     }
   }
 });

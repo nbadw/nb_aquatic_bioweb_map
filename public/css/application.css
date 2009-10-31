@@ -37,11 +37,6 @@
   top: 16px;
 }
 
-.layer-hidden .x-tree-node-anchor,
-.layer-hidden.x-tree-node-over .x-tree-node-anchor {
-  text-decoration: line-through;
-}
-
 /* Icons */
 .zoom-in {
   background-image: url(../images/zoom-in.png) !important;
@@ -138,3 +133,10 @@
   font-family: Verdana;
 }
 /* END PLACE NAME SEARCH */
+
+.gradient-legend-node {
+  margin-top: -2px;
+}
+.gradient-legend-node:first {
+  margin-top: 0;
+}

@@ -5,6 +5,12 @@ Atlas.esri.Layer = function(config) {
   this.__proxy__.__proxyOwner__ = this;
   Ext.applyIf(this, this.__proxy__);
 
+  this.title = config.title; // allows overriding layer title
+  if(config.identifiable) {
+    console.log('identifyable');
+    this.identifiable = config.identifiable;
+  }
+
   this.addEvents('update', 'legend');
 
   dojo.connect(this.__proxy__, 'onUpdate', this, function() {
@@ -17,11 +23,20 @@ Atlas.esri.Layer = function(config) {
 
 Ext.extend(Atlas.esri.Layer, Ext.util.Observable, {
   legendLoaded: false,
+  identifiable: false,
 
   name: function() {
-    var url_parts = this.__proxy__.url.split('/');
-    var text = url_parts[url_parts.length - 2].replace('_', ' ', 'g').titleize();
-    return text;
+    if(!this.title) {
+      var url_parts = this.__proxy__.url.split('/');
+      var text = url_parts[url_parts.length - 2].replace('_', ' ', 'g').titleize();
+      this.title = text;
+    }
+    return this.title;
+  },
+
+  canIdentify: function() {
+    // should only identify when layer is visible
+    return (this.identifiable && this.__proxy__.visible);
   },
 
   createLayer: function(config) {
