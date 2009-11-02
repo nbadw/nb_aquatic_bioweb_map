@@ -426,16 +426,27 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
 
   doIdentify: function(evt) {
     var identifyPanel = new Atlas.IdentifyPanel();
-    identifyPanel.on('featureselected', function(feature, identifyTaskResult) {
+    identifyPanel.on('geometryselected', function(result, geometry) {
       this.map.graphics.clear();
-      feature.setSymbol(new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([255,0,0]), 1), new dojo.Color([255,255,0,0.5])))
-      this.map.graphics.add(feature);
+      var graphic = new esri.Graphic(
+        geometry,
+        new esri.symbol.SimpleFillSymbol(
+          esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+          new esri.symbol.SimpleLineSymbol(
+            esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+            new dojo.Color([255,0,0]), 
+            1
+          ),
+          new dojo.Color([255,255,0,0.5])
+        )
+      );
+      this.map.graphics.add(graphic);
     }, this);
 
     this.identifyWindow = new Ext.Window({
       layout: 'fit',
       title: 'Identify',
-      bodyBorder: false,
+      border: false,
       bodyStyle: 'padding: 0',
       width: 500,
       height: 300,

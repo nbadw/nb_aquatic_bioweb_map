@@ -1,19 +1,24 @@
+/*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false */
+/*global window */
+
 // for those without a console
-if (typeof(console) == 'undefined') console = {
-  log: function() { }
+if (typeof(window.console) === 'undefined') {
+  window.console = {
+    log: function() { }
+  };
 }
 
 /* String Inflections */
 String.prototype.capitalize = function() {
-  if(this.length == 0) {
+  if(this.length === 0) {
     return '';
   } else {
     return this.substr(0, 1).toUpperCase() + this.substr(1);
   }
-}
+};
 
 String.prototype.titleize = function() {
-  if(this.length == 0) {
+  if(this.length === 0) {
     return '';
   } else {
     var words = this.split(' ');
@@ -22,7 +27,7 @@ String.prototype.titleize = function() {
     }
     return words.join(' ');
   }
-}
+};
 
 Number.prototype.formatHuman = function() {
   var numStr   = '' + this;
@@ -36,4 +41,4 @@ Number.prototype.formatHuman = function() {
   }
 
   return decimal.length === 0 ? whole : whole + '.' + decimal;
-}
+};

@@ -1,8 +1,18 @@
-Context = {
-  path: '/services'
-};
+/*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false */
+/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Context */
 
-Application = {
+/**
+ * @depends ./atlas/Core.js
+ * @depends ./atlas/esri/Map.js
+ * @depends ./atlas/esri/Layer.js
+ * @depends ./atlas/FindPanel.js
+ * @depends ./atlas/MapPanel.js
+ * @depends ./atlas/tree/LayerNode.js
+ * @depends ./atlas/ContentsInfoWindow.js
+ * @depends ./atlas/IdentifyPanel.js
+ */
+
+var Application = {
   init: function() {
     console.log('initializing map application ui');
     this.fullExtent = new esri.geometry.Extent({
@@ -16,19 +26,48 @@ Application = {
     this.map = new Atlas.esri.Map('map', {
       layers: [{
           url: 'http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_Imagery_World_2D/MapServer',
-          cached: true
+          cached: true,
+          title: 'ESRI World Imagery',
+          visible: false
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/provinces_and_states/MapServer',
-          cached: true
+          cached: true,
+          visible: false
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_01/MapServer',
-          cached: true
+          cached: true,
+          identifiable: true
         }, {
-          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/base_layers/MapServer',
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_02/MapServer',
+          cached: true,
+          identifiable: true,
+          visible: false
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_06/MapServer',
+          cached: true,
+          identifiable: true,
+          visible: false
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/major_landowners/MapServer',
+          cached: true,
+          visible: false,
+          identifiable: true
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/crown_land/MapServer',
+          cached: true,
+          visible: false
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/protected_areas/MapServer',
+          cached: true,
+          visible: false,
+          identifiable: true
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/lakes_and_streams/MapServer',
           cached: true
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/nb_roads/MapServer',
-          cached: true
+          cached: true,
+          title: 'Roads'
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_01_boundary_lines/MapServer',
           cached: true
@@ -38,7 +77,8 @@ Application = {
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/surveyed_lakes/MapServer',
           cached: true,
-          visible: false
+          visible: false,
+          identifiable: true
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/lake_depths/MapServer',
           cached: true,
@@ -46,9 +86,39 @@ Application = {
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/stream_types/MapServer',
           cached: true,
-          visible: false
+          visible: false,
+          identifiable: true
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/brook_trout_habitat/MapServer',
+          cached: true,
+          visible: false,
+          identifiable: true
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/atlantic_salmon_juvenile_habitat/MapServer',
+          cached: true,
+          visible: false,
+          identifiable: true
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/atlantic_salmon_adult_habitat/MapServer',
+          cached: true,
+          visible: false,
+          identifiable: true
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/environmental_stream_survey/MapServer',
+          cached: true,
+          visible: false,
+          identifiable: true
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/temperature_logger_sites/MapServer',
+          cached: true,
+          visible: false,
+          identifiable: true
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/stream_order/MapServer',
+          cached: true,
+          visible: false
+        }, {
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/water_body_ids/MapServer',
           cached: true,
           visible: false
         }

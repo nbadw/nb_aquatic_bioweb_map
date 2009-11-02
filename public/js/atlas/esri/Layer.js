@@ -7,7 +7,6 @@ Atlas.esri.Layer = function(config) {
 
   this.title = config.title; // allows overriding layer title
   if(config.identifiable) {
-    console.log('identifyable');
     this.identifiable = config.identifiable;
   }
 
