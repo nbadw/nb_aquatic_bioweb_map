@@ -1,3 +1,6 @@
+/*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false */
+/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Context */
+
 Ext.ns('Atlas');
 
 Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
@@ -24,7 +27,7 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
     this.addEvents('ready');
     Atlas.MapContents.superclass.initComponent.call(this);
 
-    new Atlas.MapContentsTreeSorter(this);
+    var sorter = new Atlas.MapContentsTreeSorter(this);
 
     this.on('checkchange', function(node, checked) {
       this.toggleLayerVisible(node, checked);
@@ -33,7 +36,7 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
     this.on('contextmenu', function(node, e) {
       var type = node.attributes.type;
       // no actions for legend class nodes
-      if(type == 'LegendClassNode') {
+      if(type === 'LegendClassNode') {
         return;
       }
       // create the context menu if not already initialized
@@ -67,13 +70,13 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
     this.buildLayerNodes(layer, legend);
     // check to see if everything is ready
     this.legendsLoaded++;
-    if(this.legendsLoaded == this.map.layers.length) {
+    if(this.legendsLoaded === this.map.layers.length) {
       this.fireEvent('ready');
     }
   },
 
   buildLayerNodes: function(layer, legend) {
-    var esriLayer = layer.__proxy__;
+    var esriLayer = layer.proxy;
     this.buildLayerNode(esriLayer);
 
     Ext.each(esriLayer.layerInfos, function(layerInfo) {
@@ -86,7 +89,7 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
   },
 
   buildLayerNode: function(layer) {
-    var name = layer.__proxyOwner__.name();
+    var name = layer.proxyOwner.name();
     this.root.appendChild(new Ext.tree.TreeNode({
       layerId: layer.id,
       text: name,
@@ -99,7 +102,7 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
   },
 
   buildLayerInfoNode: function(layer, layerInfo) {
-    var parent = layerInfo.parentLayerId != -1 ?
+    var parent = layerInfo.parentLayerId !== -1 ?
     this.findLayerInfoNode(layer.id, layerInfo.parentLayerId) :
     this.root.findChild('layerId', layer.id);
     
@@ -115,13 +118,13 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
   },
 
   buildLegendInfoNode: function(layer, legendInfo) {
-    var targetLayerInfoNode = this.findLayerInfoNode(layer.id, legendInfo['layer_id']);    
-    var legendGroup = legendInfo['legend_groups'][0];
+    var targetLayerInfoNode = this.findLayerInfoNode(layer.id, legendInfo.layer_id);
+    var legendGroup = legendInfo.legend_groups[0];
 
-    if(legendGroup['legend_classes'].length == 1) {
-      targetLayerInfoNode.attributes.symbolImage = legendGroup['legend_classes'][0]['symbol_image'];
+    if(legendGroup.legend_classes.length === 1) {
+      targetLayerInfoNode.attributes.symbolImage = legendGroup.legend_classes[0].symbol_image;
     } else {
-      Ext.each(legendGroup['legend_classes'], function(legendClass) {
+      Ext.each(legendGroup.legend_classes, function(legendClass) {
         this.buildLegendClassNode(targetLayerInfoNode, legendClass);
       }, this);
     }
@@ -137,14 +140,14 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
 
   buildLegendClassNode: function(layerInfoNode, legendClass) {
     // XXX: workaround to catch gradient legends
-    if(legendClass['label'] == null) {
+    if(legendClass.label === null) {
       layerInfoNode.attributes.gradientLegendInfoNode = true;
     }
 
     layerInfoNode.appendChild(new Ext.tree.TreeNode({
-      text: legendClass['label'],
-      qtip: legendClass['description'],
-      symbolImage: legendClass['symbol_image'],
+      text: legendClass.label,
+      qtip: legendClass.description,
+      symbolImage: legendClass.symbol_image,
       legendClass: legendClass,
       uiProvider: Atlas.MapContentsNodeUI,
       type: 'LegendClassNode'
@@ -249,8 +252,8 @@ Atlas.MapContentsNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
       var iconEl = Ext.fly(this.getIconEl());
 
       var w = 16; var h = 16; // or resize width if necessary
-      if(symbol['image_height'] != symbol['image_width']) {
-        w = (symbol['image_width'] * h) / symbol['image_height'];
+      if(symbol.image_height !== symbol.image_width) {
+        w = (symbol.image_width * h) / symbol.image_height;
       }
 
       iconEl.applyStyles({
@@ -258,7 +261,7 @@ Atlas.MapContentsNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
         height: h + 'px',
         width:  w + 'px'
       });
-      iconEl.dom.src = attrs.symbolImage['image_url'];
+      iconEl.dom.src = attrs.symbolImage.image_url;
     }
   }
 });

@@ -1,3 +1,6 @@
+/*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false */
+/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Context */
+
 Ext.ns('Atlas');
 
 Atlas.FindPanel = Ext.extend(Ext.Panel, {
@@ -151,7 +154,7 @@ Atlas.PlaceNameSearchField = Ext.extend(Ext.form.TriggerField, {
     this.addEvents('triggered');
     Atlas.PlaceNameSearchField.superclass.initComponent.call(this);
     this.on('specialkey', function(f, e) {
-      if(e.getKey() == e.ENTER) {
+      if(e.getKey() === e.ENTER) {
         this.onTriggerClick();
       }
     }, this);

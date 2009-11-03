@@ -1,3 +1,6 @@
+/*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false */
+/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Context */
+
 Ext.ns('Atlas');
 
 Atlas.IdentifyPanel = Ext.extend(Ext.Panel, {
@@ -105,12 +108,12 @@ Atlas.IdentifyPanel = Ext.extend(Ext.Panel, {
     // clear the previous results
     this.resultsTree.clearResults();
 
-    var atlasMap = map.__proxyOwner__;
+    var atlasMap = map.proxyOwner;
     Ext.each(atlasMap.layers, function(layer) {
       if(layer.canIdentify()) {
         var task = new esri.tasks.IdentifyTask(layer.url);
         var params = new esri.tasks.IdentifyParameters();
-        var layerInfos = layer.__proxy__.layerInfos;
+        var layerInfos = layer.proxy.layerInfos;
 
         params.geometry = geometry;
         params.mapExtent = map.extent;
@@ -214,11 +217,11 @@ Ext.extend(Atlas.IdentifyTaskNode, Ext.tree.TreeNode, {
     var successCallback = function(results) {
       scope.identifyTaskComplete(results);
       scope.loadComplete(deep, anim, callback, loadingScope);
-    }
+    };
     var errorCallback = function() {
       scope.identifyTaskFailed();
       scope.loadComplete(deep, anim, callback, loadingScope);
-    }
+    };
     this.task.execute(this.params, successCallback, errorCallback);
   },
 

@@ -1,3 +1,6 @@
+/*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false, nomen: false */
+/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Context */
+
 Ext.ns('Atlas');
 
 Atlas.MapPanel = Ext.extend(Ext.Panel, {
@@ -8,12 +11,16 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     {
       id: 'zoom-in',
       icon: './images/zoom-in2.png',
-      tooltip: 'Zoom In (Ctrl + Click and drag mouse over map)',
+      tooltip: 'Zoom In',
       enableToggle: true,
       scale: 'medium',
       toggleGroup: 'map-tools',
       toggleHandler: function(button, pressed) {
-        pressed ? this.enableDragZoom() : this.disableDragZoom();
+        if(pressed) {
+          this.enableDragZoom();
+        } else {
+          this.disableDragZoom();
+        }
       },
       scope: this
     },
@@ -36,7 +43,11 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
       scale: 'medium',
       toggleGroup: 'map-tools',
       toggleHandler: function(button, pressed) {
-        pressed ? this.enableIdentifyTool() : this.disableIdentifyTool();
+        if(pressed) {
+          this.enableIdentifyTool();
+        } else {
+          this.disableIdentifyTool();
+        }
       },
       scope: this
     },
@@ -57,7 +68,11 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
       scale: 'medium',
       toggleGroup: 'map-tools',
       toggleHandler: function(button, pressed) {
-        pressed ? this.enableMeasurement() : this.disableMeasurement();
+        if(pressed) {
+          this.enableMeasurement();
+        } else {
+          this.disableMeasurement();
+        }
       },
       scope: this
     } //,
@@ -154,28 +169,12 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
       this.coordinates.getEl().dom.innerHTML = "X: - Y: -";
     });
 
-    Ext.getDoc().on({
-      keydown: function(evt) {
-        // if ctrl is pressed
-        if(evt.button == 16) {
-          this.zoomIn.toggle(true);
-        }
-      },
-      keyup: function(evt) {
-        // if ctrl is released
-        if(evt.button == 16) {
-          this.zoomIn.toggle(false);
-        }
-      },
-      scope: this
-    });
-
     this.attachUpdateMonitor();
   },
 
   attachUpdateMonitor: function() {
     // for access to ext-style events, we'll need to access Atlas.esri.Map instance
-    var map     = this.map.__proxyOwner__;
+    var map     = this.map.proxyOwner;
     var status  = this.mapStatus.getEl();
     var updater = new Ext.util.TaskRunner();
     var task    = {
@@ -200,9 +199,14 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     var hideStatus = function() {
       status.hide();
       updater.stop(task);
-    }
+    };
 
-    map.updating ? showStatus.call() : hideStatus.call();
+    if(map.updating) {
+      showStatus.call();
+    } else {
+      hideStatus.call();
+    }
+    
     map.on('beforeupdate', showStatus);
     map.on('update', hideStatus);
   },
@@ -289,7 +293,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     Ext.each(this.draw._graphic.geometry.paths[0] , function(point, i, points) {
       var cachedLength = this.cachedMeasurements[i];
       // not cached, then calculate and cache
-      if(cachedLength == null) {
+      if(cachedLength === null) {
         cachedLength = this.calculateDistance(points[i-1], point);
         this.cachedMeasurements[i] = cachedLength;
       }
@@ -336,7 +340,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
 
   updateMeasurement: function() {
     var length = this.calculateMeasurementLength();
-    if(length != -1) { // -1 is an error
+    if(length !== -1) { // -1 is an error
       this.measurementInfo.update('Measurement: ' + length + ' m');
     }
   //length.toPrecision(7)
@@ -409,7 +413,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
   },
 
   enableIdentifyTool: function() {
-    var map = this.map.__proxyOwner__;
+    var map = this.map.proxyOwner;
     map.on('click', this.doIdentify, this, { 
       single: true
     });
@@ -418,7 +422,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
   disableIdentifyTool: function() {
     this.identifyWindow.close();
     this.map.graphics.clear();
-    this.map.__proxyOwner__.un('click', this.identifyWindowCloseHandler, this);
+    this.map.proxyOwner.un('click', this.identifyWindowCloseHandler, this);
     if(this.identify.pressed) {
       this.enableIdentifyTool();
     }
@@ -471,7 +475,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     this.identifyWindowCloseHandler = function() {
       this.identifyWindow.close();
     };
-    this.map.__proxyOwner__.on('click', this.identifyWindowCloseHandler, this);
+    this.map.proxyOwner.on('click', this.identifyWindowCloseHandler, this);
 
     this.identifyWindow.show();
   },
@@ -488,7 +492,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
   },
 
   createExportPdfWindow: function() {
-    var map = this.map.__proxyOwner__;
+    var map = this.map.proxyOwner;
     var services = [];
     Ext.each(map.layers, function(layer) {
       if(layer.visible) {
@@ -537,12 +541,12 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
         text: 'Export PDF',
         handler: function() {
           var exportSettings = Ext.getCmp('export-pdf-settings');
-          var extent = map.__proxy__.extent;
+          var extent = map.proxy.extent;
           var bbox = [extent.xmin, extent.ymin, extent.xmax, extent.ymax].join(',');
 
           var downloadForm = '<form id="dl" action="/export" method="POST">';
           Ext.iterate(exportSettings.getForm().getValues(), function(field, value) {
-            if(field == 'title' && value == 'Add a title...') {
+            if(field === 'title' && value === 'Add a title...') {
               return;
             }
             downloadForm += '<input type="hidden" name="' + field + '" value="' + value + '" />';

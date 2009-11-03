@@ -1,9 +1,12 @@
+/*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false */
+/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Context */
+
 Ext.ns('Atlas.esri');
 
 Atlas.esri.Layer = function(config) {
-  this.__proxy__ = this.createLayer(config);
-  this.__proxy__.__proxyOwner__ = this;
-  Ext.applyIf(this, this.__proxy__);
+  this.proxy = this.createLayer(config);
+  this.proxy.proxyOwner = this;
+  Ext.applyIf(this, this.proxy);
 
   this.title = config.title; // allows overriding layer title
   if(config.identifiable) {
@@ -12,11 +15,11 @@ Atlas.esri.Layer = function(config) {
 
   this.addEvents('update', 'legend');
 
-  dojo.connect(this.__proxy__, 'onUpdate', this, function() {
+  dojo.connect(this.proxy, 'onUpdate', this, function() {
     this.fireEvent('update');
   });  
-  dojo.connect(this.__proxy__, 'onLoad', this, function(layer) {
-    this.fireEvent('load', layer.__proxyOwner__);
+  dojo.connect(this.proxy, 'onLoad', this, function(layer) {
+    this.fireEvent('load', layer.proxyOwner);
   });
 };
 
@@ -26,7 +29,7 @@ Ext.extend(Atlas.esri.Layer, Ext.util.Observable, {
 
   name: function() {
     if(!this.title) {
-      var url_parts = this.__proxy__.url.split('/');
+      var url_parts = this.proxy.url.split('/');
       var text = url_parts[url_parts.length - 2].replace('_', ' ', 'g').titleize();
       this.title = text;
     }
@@ -35,7 +38,7 @@ Ext.extend(Atlas.esri.Layer, Ext.util.Observable, {
 
   canIdentify: function() {
     // should only identify when layer is visible
-    return (this.identifiable && this.__proxy__.visible);
+    return (this.identifiable && this.proxy.visible);
   },
 
   createLayer: function(config) {

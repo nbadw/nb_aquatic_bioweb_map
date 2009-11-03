@@ -1,3 +1,6 @@
+/*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false */
+/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Context */
+
 Ext.ns('Atlas');
 
 Atlas.ContentsInfoWindow = Ext.extend(Ext.Window, {
@@ -23,7 +26,11 @@ Atlas.ContentsInfoWindow = Ext.extend(Ext.Window, {
   displayInfo: function(node) {
     this.on('show', function() {
       this.showLoadMask();
-      this.cache[node] ? this.renderInfo(node) : this.requestInfo(node);
+      if(this.cache[node]) {
+        this.renderInfo(node);
+      } else {
+        this.requestInfo(node);
+      }
     }, this, { single: true });
     this.show(node.getUI().getEl());
   },

@@ -1,3 +1,6 @@
+/*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false, evil: true */
+/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Context */
+
 Ext.ns('Atlas.tree');
 
 Atlas.tree.LayerTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
@@ -16,7 +19,7 @@ Atlas.tree.LayerTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
     if(this.applyLoader !== false) {
       attr.loader = this;
     }
-    if(typeof attr.uiProvider == 'string') {
+    if(typeof attr.uiProvider === 'string') {
       attr.uiProvider = this.uiProviders[attr.uiProvider] || eval(attr.uiProvider);
     }
     if(attr.nodeType) {
@@ -27,7 +30,7 @@ Atlas.tree.LayerTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
   },
 
   createLegendNode: function(attr) {
-    if(attr.legendGroups.length == 1) {
+    if(attr.legendGroups.length === 1) {
       return new Ext.tree.TreeNode({
         text: attr.name,
         icon: attr.legendGroups[0].legendClasses[0].symbolImage.imageURL

@@ -1,5 +1,5 @@
 /*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false */
-/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Context */
+/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Context */
 
 /**
  * @depends ./atlas/Core.js
@@ -73,7 +73,8 @@ var Application = {
           cached: true
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/place_names/MapServer',
-          cached: true
+          cached: true,
+          visible: false
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/surveyed_lakes/MapServer',
           cached: true,
