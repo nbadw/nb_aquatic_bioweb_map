@@ -7,12 +7,11 @@ Atlas.IdentifyPanel = Ext.extend(Ext.Panel, {
   initComponent: function() {
     Ext.apply(this, {
       layout:'card',
-      activeItem: 2,
+      activeItem: 0,
       flex: 1,
       border: false,
       items: [
-      this.createMessagePanel('initial-identify-panel', 'TODO: initial identify message'),
-      this.createMessagePanel('no-identify-results-panel', 'TODO: no results message'),
+      this.createMessagePanel('no-identifiable-layers-panel', 'No layers to identify.  Only certain layers can be queried and they must be visible.'),
       this.createResultsPanel()
       ]
     });
@@ -20,16 +19,12 @@ Atlas.IdentifyPanel = Ext.extend(Ext.Panel, {
     Atlas.IdentifyPanel.superclass.initComponent.apply(this, arguments);
   },
 
-  activateInitialPanel: function() {
+  activateNoIdentifiableLayersPanel: function() {
     this.getLayout().setActiveItem(0);
   },
 
-  activateNoResultsPanel: function() {
-    this.getLayout().setActiveItem(1);
-  },
-
   activateResultsPanel: function() {
-    this.getLayout().setActiveItem(2);
+    this.getLayout().setActiveItem(1);
   },
 
   createMessagePanel: function(id, msg) {
@@ -37,6 +32,7 @@ Atlas.IdentifyPanel = Ext.extend(Ext.Panel, {
       bodyCssClass: id,
       layout:'vbox',
       border: false,
+      bodyStyle: 'padding: 10px;',
       layoutConfig: {
         pack: 'center',
         align: 'center'
@@ -69,7 +65,7 @@ Atlas.IdentifyPanel = Ext.extend(Ext.Panel, {
       border: false,
       activeItem: 0,
       items: [
-        this.createMessagePanel('no-result-selected-panel', 'TODO: no result selected'),
+        this.createMessagePanel('no-result-selected-panel', 'Expand a layer to load its results; select a result to view its attributes.'),
         attributesGrid
       ]
     });
@@ -84,6 +80,7 @@ Atlas.IdentifyPanel = Ext.extend(Ext.Panel, {
           var result = node.attributes.result;
           if(result) {            
             attributesGrid.setSource(result.feature.attributes);
+            attributesGrid.getView().refresh(true);
             attributesPanel.getLayout().setActiveItem(1);
           } else {
             attributesPanel.getLayout().setActiveItem(0);
@@ -127,6 +124,12 @@ Atlas.IdentifyPanel = Ext.extend(Ext.Panel, {
         this.resultsTree.addIdentifyTask(layer, task, params);
       }
     }, this);
+
+    if(this.resultsTree.root.childNodes.length === 0) {
+      this.activateNoIdentifiableLayersPanel();
+    } else {
+      this.activateResultsPanel();
+    }
   }
 });
 
@@ -226,12 +229,24 @@ Ext.extend(Atlas.IdentifyTaskNode, Ext.tree.TreeNode, {
   },
 
   identifyTaskFailed: function() {
+    this.showNoResults();
   },
 
   identifyTaskComplete: function(results) {
-    Ext.each(results, function(result) {
-      this.addResult(result);
-    }, this);
+    if(results.length > 0) {
+      Ext.each(results, function(result) {
+        this.addResult(result);
+      }, this);
+    } else {
+      this.showNoResults();
+    }
+  },
+
+  showNoResults: function() {
+    var noResultsNode = new Ext.tree.TreeNode({
+      text: 'No results found'
+    });
+    this.appendChild(noResultsNode);
   },
 
   addResult: function(result) {

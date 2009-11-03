@@ -13,28 +13,23 @@
     <!-- JAVASCRIPTS -->
     <script type="text/javascript" src="./vendor/ext-3.0.0/adapter/ext/ext-base.js"></script>
     <script type="text/javascript" src="./vendor/ext-3.0.0/ext-all.js"></script>
-    <script type="text/javascript" src="./vendor/esri/arcgis-1.4-debug.js"></script>
+    <script type="text/javascript" src="./vendor/esri/arcgis-1.4.js"></script>
     <script type="text/javascript" src="./vendor/proj4js/lib/proj4js-combined.js"></script>
 
     <script type="text/javascript">
       var Context = { path: '.' };
     </script>
 
-    <script type="text/javascript" src="./js/core.js"></script>
-
+    <script type="text/javascript" src="./js/atlas/Core.js"></script>
     <script type="text/javascript" src="./js/atlas/esri/Map.js"></script>
     <script type="text/javascript" src="./js/atlas/esri/Layer.js"></script>
     <script type="text/javascript" src="./js/atlas/FindPanel.js"></script>
     <script type="text/javascript" src="./js/atlas/MapPanel.js"></script>
-    <script type="text/javascript" src="./js/atlas/tree/LayerNode.js"></script>
     <script type="text/javascript" src="./js/atlas/ContentsInfoWindow.js"></script>
     <script type="text/javascript" src="./js/atlas/MapContents.js"></script>
-    <script type="text/javascript" src="./js/atlas/IdentifyPanel2.js"></script>
+    <script type="text/javascript" src="./js/atlas/IdentifyPanel.js"></script>
 
     <script type="text/javascript" src="./js/application.js"></script>
-    <script type="text/javascript">
-      dojo.config.isDebug = true;
-    </script>
     <!-- END JAVASCRIPT -->
 
   </head>
@@ -104,6 +99,8 @@
       <iframe id="downloads"></iframe>
     </div>
 
-
+    <div id="footer" class="x-hidden">
+      <p>Footer Text...</p>
+    </div>
   </body>
 </html>

@@ -5,11 +5,11 @@
  * @depends ./atlas/Core.js
  * @depends ./atlas/esri/Map.js
  * @depends ./atlas/esri/Layer.js
- * @depends ./atlas/FindPanel.js
- * @depends ./atlas/MapPanel.js
- * @depends ./atlas/tree/LayerNode.js
- * @depends ./atlas/ContentsInfoWindow.js
  * @depends ./atlas/IdentifyPanel.js
+ * @depends ./atlas/MapContents.js
+ * @depends ./atlas/FindPanel.js
+ * @depends ./atlas/ContentsInfoWindow.js
+ * @depends ./atlas/MapPanel.js
  */
 
 var Application = {
@@ -133,10 +133,11 @@ var Application = {
     this.header = this.createHeader();
     this.mapContents = this.createMapContents();
     this.mapPanel = this.createMapPanel();
+    this.footer = this.createFooter();
 
     var viewport = new Ext.Viewport({
       layout: 'border',
-      items: [this.header, this.mapContents, this.mapPanel],
+      items: [this.header, this.mapContents, this.mapPanel, this.footer],
       listeners: {
         'afterlayout': function() {
           this.contentsLoadingMask = new Ext.LoadMask(this.mapContents.body);
@@ -214,6 +215,15 @@ var Application = {
       contentEl: 'header',
       baseCls: 'x-plain',
       margins: '0 0 5 0',
+      autoHeight: true
+    });
+  },
+
+  createFooter: function() {
+    return new Ext.Panel({
+      region: 'south',
+      contentEl: 'footer',
+      baseCls: 'x-plain',
       autoHeight: true
     });
   },

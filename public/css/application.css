@@ -1,4 +1,5 @@
-#header {
+#header,
+#footer {
   padding: 8px 5px 5px 8px;
   color: #fff;
   background-color: #1e4176;
@@ -19,7 +20,11 @@
 #header a:hover {
   color: #ffff80;
 }
-
+#footer {
+  font-weight: bold;
+  font-size: 10px;
+  font-family: Verdana;
+}
 #map {
   height: 100%;
   width: 100%;
