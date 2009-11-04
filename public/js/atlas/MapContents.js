@@ -32,21 +32,6 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
     this.on('checkchange', function(node, checked) {
       this.toggleLayerVisible(node, checked);
     }, this);
-
-    this.on('contextmenu', function(node, e) {
-      var type = node.attributes.type;
-      // no actions for legend class nodes
-      if(type === 'LegendClassNode') {
-        return;
-      }
-      // create the context menu if not already initialized
-      if (!this.contextMenu) {
-        this.contextMenu = this.createContextMenu();
-      }
-      // show the menu
-      this.ctxNode = node;
-      this.contextMenu.showAt(e.getXY());
-    }, this);
   },
 
   addLayer: function(layer) {
@@ -170,29 +155,6 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
     return foundNode;
   },
 
-  showContentsInfoWindow: function() {
-    if(!this.contentsInfoWindow) {
-      this.contentsInfoWindow = this.createContentsInfoWindow();
-    }
-    this.contentsInfoWindow.displayInfo(this.ctxNode);
-  },
-
-  hideContentsInfoWindow: function() {
-    this.contentsInfoWindow.hide();
-  },
-
-  createContentsInfoWindow: function() {
-    return new Atlas.ContentsInfoWindow({
-      width: 500,
-      height: 300,
-      buttons: [{
-        text: 'Close',
-        handler: this.hideContentsInfoWindow,
-        scope: this
-      }]
-    });
-  },
-
   toggleLayerVisible: function(node, visible) {
     var layer = node.attributes.layer;
     if(visible) {
@@ -202,25 +164,20 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
       layer.hide();
       node.getUI().addClass('layer-hidden');
     }
-  },
-  
-  createContextMenu: function() {
-    return new Ext.menu.Menu({
-      id: 'mapContentsCtxMenu',
-      items: [{
-        text: 'About',
-        id: 'btn-information',
-        icon: './images/information.png',
-        tooltip: 'Click for information on the selected layer',
-        handler: this.showContentsInfoWindow,
-        scope: this
-      }]
-    });
   }
-
 });
 
 Atlas.LayerNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
+  tooltipRegistered: false,
+
+  render: function(bulkRender) {
+    Atlas.LayerNodeUI.superclass.render.apply(this, arguments);
+    if(!this.tooltipRegistered) {
+      Atlas.MapContentsUtil.registerDescriptionTooltip(this.textNode, this.node.attributes.layer.url);      
+      this.tooltipRegistered = true;
+    }
+  },
+
   // private
   onDblClick : function(e) {
     e.preventDefault();
@@ -236,6 +193,16 @@ Atlas.LayerNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
 
 Atlas.MapContentsNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
   focus: Ext.emptyFn, // prevent odd scrolling behavior
+  tooltipRegistered: false,
+
+  render: function(bulkRender) {
+    Atlas.MapContentsNodeUI.superclass.render.apply(this, arguments);
+    if(!this.tooltipRegistered && this.node.attributes.layerInfo) {
+      var serviceUrl = this.node.attributes.layer.url + '/' + this.node.attributes.layerInfo.id;
+      Atlas.MapContentsUtil.registerDescriptionTooltip(this.textNode, serviceUrl);
+      this.tooltipRegistered = true;
+    }
+  },
 
   renderElements : function(node, attrs, targetNode, bulkRender) {
     if(node.childNodes.length > 0) {
@@ -288,3 +255,26 @@ Atlas.MapContentsTreeSorter = Ext.extend(Ext.tree.TreeSorter, {
     }
   }
 });
+
+Atlas.MapContentsUtil = {
+  // create anonymous renderer instance
+  renderer: new (Ext.extend(Ext.Updater.BasicRenderer, {
+    render : function(el, response, updateManager, callback) {
+      var info = Ext.decode(response.responseText);
+      el.update(info.description || 'No Description', updateManager.loadScripts, callback);
+    }
+  }))(),
+
+  registerDescriptionTooltip: function(target, serviceUrl) {
+    var tooltip = new Ext.ToolTip({
+      target: Ext.id(target),
+      trackMouse: true,
+      width: 370,
+      renderer: this.renderer,
+      autoLoad: {
+        url: Context.path + '/info',
+        params: { url: serviceUrl }
+      }
+    });
+  }
+};
