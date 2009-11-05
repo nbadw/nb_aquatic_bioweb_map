@@ -283,21 +283,17 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
 
     var length = 0;
     // calculate the line segment currently being drawn
-    //console.log("currently drawing: " + this.draw._tGraphic.geometry.paths[0]);
     var currentPath = this.draw._tGraphic.geometry.paths[0];
     length += this.calculateDistance(currentPath[0], currentPath[1]);
-    //console.log("length = " + length);
 
     // get the cached measurement of each fixed line segment
-    //console.log("current path:  " + this.draw._graphic.geometry.paths[0]);
     Ext.each(this.draw._graphic.geometry.paths[0] , function(point, i, points) {
       var cachedLength = this.cachedMeasurements[i];
       // not cached, then calculate and cache
-      if(cachedLength === null) {
+      if(isNaN(cachedLength)) {
         cachedLength = this.calculateDistance(points[i-1], point);
         this.cachedMeasurements[i] = cachedLength;
       }
-      //console.log('cached length #' + i + ': ' + cachedLength);
       length += cachedLength;
     }, this);
 
@@ -331,7 +327,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     return esri.geometry.getLength(
       new esri.geometry.Point(p0.x, p0.y, this.targetSRS),
       new esri.geometry.Point(p1.x, p1.y, this.targetSRS)
-      );
+    );
   },
 
   clearMeasurement: function() {
@@ -341,9 +337,9 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
   updateMeasurement: function() {
     var length = this.calculateMeasurementLength();
     if(length !== -1) { // -1 is an error
-      this.measurementInfo.update('Measurement: ' + length + ' m');
+      var humanLength = parseFloat(length.toPrecision(7)).formatHuman();
+      this.measurementInfo.update('Measurement: ' + humanLength + ' m');
     }
-  //length.toPrecision(7)
   },
 
   enableMeasurement: function() {
