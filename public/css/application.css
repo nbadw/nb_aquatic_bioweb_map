@@ -21,8 +21,9 @@
   color: #ffff80;
 }
 #footer {
+  text-align: right;
   font-weight: bold;
-  font-size: 10px;
+  font-size: 8px;
   font-family: Verdana;
 }
 #map {
@@ -33,10 +34,12 @@
 #disclaimer-btn {
   position: absolute;
   right: 5px;
-  top: 16px; /* 2px; */
+  top: 2px; 
+}
+#disclaimer-win .x-window-body {
+  text-align: justify;
 }
 #help-btn {
-  display: none;
   position: absolute;
   right: 5px;
   top: 16px;
@@ -138,6 +141,41 @@
   font-family: Verdana;
 }
 /* END PLACE NAME SEARCH */
+
+/* HELP CONTENTS */
+#help-win .x-window-body {
+  text-align: justify;
+}
+#help-win .x-window-body h1 {
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+#help-win .x-window-body h1.first {
+  margin-top: 0;
+}
+#help-win .x-window-body ul {
+  margin-left: 15px;
+  padding-bottom: 10px;
+}
+#help-win .x-window-body li {
+  margin: 5px 0;
+  list-style-type: disc;
+  clear: both;
+}
+#help-win .x-window-body li ul {
+  margin-left: 0;
+  padding-bottom: 0;
+}
+#help-win .x-window-body li ul li {
+  margin-left: 20px;
+  list-style-type: square;
+}
+#help-win .x-window-body img.tool {
+  float: right;
+  padding-left: 5px;
+  padding-bottom: 7px;
+}
+/* END HELP CONTENTS */
 
 .gradient-legend-node {
   margin-top: -2px;

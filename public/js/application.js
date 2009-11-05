@@ -8,7 +8,6 @@
  * @depends ./atlas/IdentifyPanel.js
  * @depends ./atlas/MapContents.js
  * @depends ./atlas/FindPanel.js
- * @depends ./atlas/ContentsInfoWindow.js
  * @depends ./atlas/MapPanel.js
  */
 
@@ -16,10 +15,10 @@ var Application = {
   init: function() {
     console.log('initializing map application ui');
     this.fullExtent = new esri.geometry.Extent({
-      xmin: -69.3504643875024,
-      ymin: 42.84622,
-      xmax: -63.4013632447762,
-      ymax: 50.55837,
+      xmin: -71.6823103005143,
+      ymin: 42.6758057421875,
+      xmax: -59.9489118630143,
+      ymax: 50.2234131640625,
       spatialReference: { wkid: 4326 }
     });
 
@@ -28,7 +27,7 @@ var Application = {
           url: 'http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_Imagery_World_2D/MapServer',
           cached: true,
           title: 'ESRI World Imagery',
-          visible: false
+          visible: true
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/provinces_and_states/MapServer',
           cached: true,
@@ -36,17 +35,20 @@ var Application = {
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_01/MapServer',
           cached: true,
-          identifiable: true
+          identifiable: true,
+          title: 'Level 1 Watersheds'
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_02/MapServer',
           cached: true,
           identifiable: true,
-          visible: false
+          visible: false,
+          title: 'Level 2 Watersheds'
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_06/MapServer',
           cached: true,
           identifiable: true,
-          visible: false
+          visible: false,
+          title: 'Level 6 Watersheds'
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/major_landowners/MapServer',
           cached: true,
@@ -63,18 +65,20 @@ var Application = {
           identifiable: true
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/lakes_and_streams/MapServer',
-          cached: true
+          cached: true,
+          title: 'Lakes &amp; Streams'
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/nb_roads/MapServer',
           cached: true,
           title: 'Roads'
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_01_boundary_lines/MapServer',
-          cached: true
-        }, {
-          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/place_names/MapServer',
           cached: true,
-          visible: false
+          title: 'Watershed Boundary Lines'
+        //}, {
+        //  url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/place_names/MapServer',
+        //  cached: true,
+        //  visible: false
         }, {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/surveyed_lakes/MapServer',
           cached: true,
@@ -249,19 +253,24 @@ var Application = {
 };
 
 Ext.onReady(function() {
+  // init the tooltip singleton.  any tag-based quick tips will start working.
   Ext.QuickTips.init();
-  //Ext.state.Manager.setProvider(new Ext.state.SessionProvider({state: Ext.appState}));
+  // apply config properties to the tooltip singleton
+  Ext.apply(Ext.QuickTips.getQuickTip(), {
+    trackMouse: true
+  });
+  // require esri libraries
   dojo.require("esri.map");
   dojo.require("esri.tasks.identify");
   dojo.require("esri.toolbars.draw");
   dojo.require("esri.toolbars.navigation");
-
+  // set esri configuration
   esriConfig.defaults.io.proxyUrl = "/arcgisserver/apis/javascript/proxy/proxy.ashx";
   esriConfig.defaults.io.alwaysUseProxy = false;
   esriConfig.defaults.map.zoomDuration = 100;
   esriConfig.defaults.map.zoomRate = 100;
-
+  // define non-standard projections for use in Proj4js
   Proj4js.defs["EPSG:2953"] = "+proj=sterea +lat_0=46.5 +lon_0=-66.5 +k=0.999912 +x_0=2500000 +y_0=7500000 +ellps=GRS80 +units=m +no_defs";
-
+  // start the application
   Application.init();
 });

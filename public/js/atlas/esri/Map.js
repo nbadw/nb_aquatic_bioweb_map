@@ -15,8 +15,9 @@ Atlas.esri.Map = function(mapEl, config) {
     'layeradd',
     'beforeupdate',
     'update',
-    'click'
-    );
+    'click',
+    'extentchange'
+  );
   
   this.registerProxyEvents();
   this.registerLayerUpdateTriggers();
@@ -47,6 +48,9 @@ Ext.extend(Atlas.esri.Map, Ext.util.Observable, {
     });
     dojo.connect(this.proxy, 'onClick', this, function(evt) {
       this.fireEvent('click', evt);
+    });
+    dojo.connect(this.proxy, 'onExtentChange', this, function(extent, delta, levelChange, lod) {
+      this.fireEvent('extentchange', extent, delta, levelChange, lod);
     });
   },
 

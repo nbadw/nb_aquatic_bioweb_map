@@ -11,10 +11,10 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     {
       id: 'zoom-in',
       icon: './images/zoom-in2.png',
-      tooltip: 'Zoom In',
       enableToggle: true,
       scale: 'medium',
       toggleGroup: 'map-tools',
+      tooltip: 'Click Zoom In tool, then draw box around area of interest. Note: click the Zoom In tool again to disable this feature and return to the cursor to Pan mode.',
       toggleHandler: function(button, pressed) {
         if(pressed) {
           this.enableDragZoom();
@@ -27,8 +27,8 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
 
     {
       icon: './images/full-extent2.png',
-      tooltip: 'Zoom To Full Extent',
       scale: 'medium',
+      tooltip: 'Click this tool to zoom to the full extent of the Province.',
       handler: function() {
         this.zoomToFullExtent();
       },
@@ -38,10 +38,10 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     {
       id: 'identify',
       icon: './images/query.png',
-      tooltip: 'Identify',
       enableToggle: true,
       scale: 'medium',
       toggleGroup: 'map-tools',
+      tooltip: 'Click on the identify tool, and then click on a feature on the map to retrieve details on the feature. The results box will list the visible layers. Click on the layer for the results.',
       toggleHandler: function(button, pressed) {
         if(pressed) {
           this.enableIdentifyTool();
@@ -54,7 +54,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
 
     {
       icon: './images/search.png',
-      tooltip: 'Find a place',
+      tooltip: 'Click on the Find tool, enter a place name or water body name, and press Enter (or click on the Search symbol). The Canadian Geographical Names Database at NR Canada will be searched and the results returned by geographical type (e.g. river, lake, city, parish, etc.).',
       scale: 'medium',
       handler: this.showFindWindow,
       scope: this
@@ -63,7 +63,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     {
       id: 'measure',
       icon: './images/ruler.png',
-      tooltip: 'Measure',
+      tooltip: 'Click on the Measure tool and then click on map to begin measuring distances. Click on map to create a vertex or change direction; double click to finish. The measured distance is displayed at the top of the map (units = meters).',
       enableToggle: true,
       scale: 'medium',
       toggleGroup: 'map-tools',
@@ -91,6 +91,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     {
       id: 'mapInfo',
       icon: './images/world.png',
+      handleMouseEvents: false,
       listeners: {
         mouseout: function() {
         //this.mapInfo.hide();

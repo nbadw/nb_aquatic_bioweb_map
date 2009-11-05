@@ -3,15 +3,15 @@
   <head>
     <title>New Brunswick Aquatic Bio-Web</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" type="text/css" href="./vendor/ext-3.0.0/resources/css/ext-all.css" />
     <link type="text/css" rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/1.4/js/dojo/dijit/themes/tundra/tundra.css"/>
-    <link rel="stylesheet" type="text/css" href="./css/application.css" />
+    <link rel="stylesheet" type="text/css" href="./vendor/ext-3.0.0/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="./css/application.min.css" />
   </head>
   <body id="application" class="tundra">
     <div id="header">
       <h1>New Brunswick Aquatic Bio-Web</h1>
       <a href="#" id="disclaimer-btn">disclaimer</a>
-      <a class="x-hidden" href="#" id="help-btn">help</a>
+      <a href="#" id="help-btn">help</a>
     </div>
 
     <div id="map">
@@ -65,7 +65,38 @@
     <div id="help-win" class="x-hidden">
       <div class="x-window-header">Help</div>
       <div class="x-window-body">
-        Help Contents...
+        <h1 class="first">Map Contents</h1>
+        <ul>
+          <li>
+            Layer Visibility – Click on the layer check box to make a layer visible. Note that layers may not be visible when clicked for the following reasons:
+            <ul>
+              <li>There are several background layers that cover the entire province, but only one background will be visible even if multiple background layers are turned on (one layer may display on top of another blocking its view).</li>
+              <li>Some layers are scale dependent and are not visible until the map is at a specific scale. For instance, some place names and water body identifiers are not visible until the map is zoomed to a scale where the text can be appropriately displayed.</li>
+            </ul>
+          </li>
+          <li>Background Layers – Chose one of the following layers for a background: Provinces and States; Watersheds Level 01; Watersheds Level 02; Watersheds Level 06; or ESRI World Imagery.</li>
+          <li>Contents List – The map contents list is in alphabetical order.</li>
+          <li>Enlarge the Map - Click the <div class="x-tool x-tool-collapse-west" style="display: inline-block; float: none; cursor: auto;"></div>&nbsp; symbol on title bar of Map Contents frame to hide the table of contents.</li>
+          <li>Expand / Collapse Layers – Click the <img alt="+" src="./vendor/ext-3.0.0/resources/images/default/tree/elbow-plus-nl.gif"/> symbol next to a layer or layer group in Map Contents to expand the list of layers within the group or to display the layer’s legend</li>
+          <li>Layer Info – Hover the mouse over a layer to view a description</li>
+        </ul>
+
+        <h1>Map Tools</h1>
+        <ul>
+          <li>Scale Control Bar – Slide or click the scale control bar to increase or decrease the map scale (zoom in or out).</li>
+          <li>Map Scale &amp; Coordinates – The scale of the map and the coordinates (WGS84) at which the cursor is placed are displayed in the lower right corner of the map.</li>
+          <li>Pan – Click on map, and then drag cursor to move the map in any direction. Note: this feature is disabled if the Zoom In tool is active or toggled on. Click the Zoom In tool to turn off.</li>
+          <li><img alt="" class="tool" src="./images/zoom-in2.png"/>Zoom In – Click Zoom In tool, then draw box around area of interest. Note: click the Zoom In tool again to disable this feature and return to the cursor to Pan mode.</li>
+          <li><img alt="" class="tool" src="./images/full-extent2.png"/>Zoom to Full Extent – Click this tool to zoom to the full extent of the Province.</li>
+          <li><img alt="" class="tool" src="./images/query.png"/>Identify – Click on the identify tool, and then click on a feature on the map to retrieve details on the feature. The results box will list the visible layers. Click on the layer for the results.</li>
+          <li><img alt="" class="tool" src="./images/search.png"/>Find – Click on the Find tool, enter a place name or water body name, and press Enter (or click on the Search symbol). The Canadian Geographical Names Database at NR Canada will be searched and the results returned by geographical type (e.g. river, lake, city, parish, etc.).
+            <ul>
+              <li>Click on a place or water body within the list and a marker will be displayed on the map at its location. You may have to move the Find a Place window to view the marker.</li>
+              <li>Double click on a place within the result list and the map will zoom to the location and display a marker.</li>
+            </ul>
+          </li>
+          <li><img alt="" class="tool" src="./images/ruler.png"/>Measure – Click on the Measure tool and then click on map to begin measuring distances. Click on map to create a vertex or change direction; double click to finish. The measured distance is displayed at the top of the map (units = meters).</li>
+        </ul>
       </div>
     </div>
 
@@ -74,7 +105,7 @@
     </div>
 
     <div id="footer" class="x-hidden">
-      <p>Footer Text...</p>
+      &copy; 2009 NB Aquatic Data Warehouse
     </div>
     
     <script type="text/javascript">
