@@ -30,6 +30,7 @@ Atlas.esri.Map = function(mapEl, config) {
 Ext.extend(Atlas.esri.Map, Ext.util.Observable, {
   layers: [],
   loadCount: 0,
+  visibleCount: 0,
   updating: false,
 
   addLayer: function(layer, index) {
@@ -58,6 +59,7 @@ Ext.extend(Atlas.esri.Map, Ext.util.Observable, {
     Ext.each(['onZoomStart', 'onPanStart'], function(triggerEvent) {
       dojo.connect(this.proxy, triggerEvent, this, function() {
         this.loadCount = 0;
+        this.visibleCount = this.countVisibleLayers();
         this.updating = true;
         this.fireEvent('beforeupdate');
       });
@@ -66,9 +68,19 @@ Ext.extend(Atlas.esri.Map, Ext.util.Observable, {
 
   onLayerUpdated: function() {
     this.loadCount++;
-    if(this.loadCount === this.layers.length) {
+    if(this.loadCount === this.visibleCount) {
       this.updating = false;
       this.fireEvent('update');
     }
+  },
+
+  countVisibleLayers: function() {
+    var count = 0;
+    Ext.each(this.layers, function(layer) {
+      if(layer.proxy.visible) {
+        count += 1;
+      }
+    });
+    return count;
   }
 });

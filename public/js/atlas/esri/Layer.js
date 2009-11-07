@@ -13,13 +13,22 @@ Atlas.esri.Layer = function(config) {
     this.identifiable = config.identifiable;
   }
 
-  this.addEvents('update', 'legend');
+  this.addEvents('error', 'load', 'opacitychange', 'update', 'visibilitychange', 'legend');
 
-  dojo.connect(this.proxy, 'onUpdate', this, function() {
-    this.fireEvent('update');
-  });  
+  dojo.connect(this.proxy, 'onError', this, function(error) {
+    this.fireEvent('error', error);
+  });
   dojo.connect(this.proxy, 'onLoad', this, function(layer) {
     this.fireEvent('load', layer.proxyOwner);
+  });
+  dojo.connect(this.proxy, 'onOpacityChange', this, function(opacity) {
+    this.fireEvent('opacitychange', opacity);
+  });
+  dojo.connect(this.proxy, 'onUpdate', this, function() {
+    this.fireEvent('update');
+  });
+  dojo.connect(this.proxy, 'onVisibilityChange', this, function(visibility) {
+    this.fireEvent('visibilitychange', visibility);
   });
 };
 
@@ -69,6 +78,7 @@ Ext.extend(Atlas.esri.Layer, Ext.util.Observable, {
     Ext.Ajax.request({
       url: Context.path + '/legends',
       params: { url: this.url },
+      method: 'GET',
       success: function(response, options) {
         this.legend = Ext.decode(response.responseText);
         this.legendLoaded = true;

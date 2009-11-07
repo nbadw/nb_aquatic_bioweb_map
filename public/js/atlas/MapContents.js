@@ -272,6 +272,7 @@ Atlas.MapContentsUtil = {
       width: 370,
       renderer: this.renderer,
       autoLoad: {
+        method: 'GET',
         url: Context.path + '/info',
         params: { url: serviceUrl }
       }

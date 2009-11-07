@@ -14,7 +14,10 @@ Atlas.FindPanel = Ext.extend(Ext.Panel, {
     };
     
     var placeNameStore = new Ext.data.GroupingStore({
-      url: Context.path + '/places',
+      proxy: new Ext.data.HttpProxy({
+        method: 'GET',
+        url: Context.path + '/places'
+      }),
       reader: new Atlas.PlaceReader(),
       autoDestroy: true,
       sortInfo: {

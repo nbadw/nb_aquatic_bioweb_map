@@ -24,108 +24,191 @@ var Application = {
 
     this.map = new Atlas.esri.Map('map', {
       layers: [{
-          url: 'http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_Imagery_World_2D/MapServer',
-          cached: true,
           title: 'ESRI World Imagery',
-          visible: true
+          cached: true,
+          url: 'http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_Imagery_World_2D/MapServer',
+          visible: true,
+          identifiable: false
         }, {
+          title: 'Provinces &amp; States',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/provinces_and_states/MapServer',
-          cached: true,
-          visible: false
+          visible: false,
+          identifiable: false
         }, {
+          title: 'Level 1 Watersheds',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_01/MapServer',
-          cached: true,
-          identifiable: true,
-          title: 'Level 1 Watersheds'
+          visible: true,
+          identifiable: true
         }, {
+          title: 'Level 2 Watersheds',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_02/MapServer',
-          cached: true,
-          identifiable: true,
           visible: false,
-          title: 'Level 2 Watersheds'
+          identifiable: true
         }, {
+          title: 'Level 6 Watersheds',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_06/MapServer',
-          cached: true,
-          identifiable: true,
           visible: false,
-          title: 'Level 6 Watersheds'
+          identifiable: true
         }, {
+          title: 'Major Landowner',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/major_landowners/MapServer',
-          cached: true,
           visible: false,
           identifiable: true
         }, {
+          title: 'Crown Land',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/crown_land/MapServer',
-          cached: true,
-          visible: false
+          visible: false,
+          identifiable: false
         }, {
+          title: 'Protected Areas',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/protected_areas/MapServer',
-          cached: true,
           visible: false,
           identifiable: true
         }, {
+          title: 'Administrative Areas',
+          cached: true,
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/administrative_areas/MapServer',
+          visible: false,
+          identifiable: false
+        }, {
+          title: 'Lakes &amp; Streams',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/lakes_and_streams/MapServer',
-          cached: true,
-          title: 'Lakes &amp; Streams'
+          visible: true,
+          identifiable: true
         }, {
+          title: 'Roads',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/nb_roads/MapServer',
-          cached: true,
-          title: 'Roads'
+          visible: true,
+          identifiable: false
         }, {
+          title: 'Watershed Boundary Lines',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_01_boundary_lines/MapServer',
-          cached: true,
-          title: 'Watershed Boundary Lines'
-        //}, {
-        //  url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/place_names/MapServer',
-        //  cached: true,
-        //  visible: false
+          visible: true,
+          identifiable: false
         }, {
+          title: 'Place Names',
+          cached: true,
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/place_names/MapServer',
+          visible: true,
+          identifiable: false
+        }, {
+          title: 'Regulated Waters',
+          cached: true,
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/regulated_waters/MapServer',
+          visible: false,
+          identifiable: false
+        },{
+          title: 'Surveyed Lakes',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/surveyed_lakes/MapServer',
-          cached: true,
           visible: false,
           identifiable: true
         }, {
+          title: 'Lake Depths',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/lake_depths/MapServer',
-          cached: true,
-          visible: false
+          visible: false,
+          identifiable: false
         }, {
+          title: 'Stream Types',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/stream_types/MapServer',
-          cached: true,
           visible: false,
           identifiable: true
         }, {
+          title: 'Brook Trout Habitat',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/brook_trout_habitat/MapServer',
-          cached: true,
           visible: false,
           identifiable: true
         }, {
+          title: 'Atlantic Salmon Juvenile Habitat',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/atlantic_salmon_juvenile_habitat/MapServer',
-          cached: true,
           visible: false,
           identifiable: true
         }, {
+          title: 'Atlantic Salmon Adult Habitat',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/atlantic_salmon_adult_habitat/MapServer',
-          cached: true,
           visible: false,
           identifiable: true
         }, {
+          title: 'Environmental Stream Survey',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/environmental_stream_survey/MapServer',
-          cached: true,
           visible: false,
           identifiable: true
         }, {
+          title: 'Stocked Waters',
+          cached: true,
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/stocked_waters/MapServer',
+          visible: false,
+          identifiable: false
+        }, {
+          title: 'Hydrometric Stations',
+          cached: true,
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/hydrometric_stations/MapServer',
+          visible: false,
+          identifiable: false
+        }, {
+          title: 'Groundwater Monitoring Sites',
+          cached: true,
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/groundwater_monitoring_stations/MapServer',
+          visible: false,
+          identifiable: false
+        }, {
+          title: 'Water Chemistry Sites',
+          cached: true,
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/water_chemistry_sites/MapServer',
+          visible: false,
+          identifiable: false
+        }, {
+          title: 'Fish Counting Facilities',
+          cached: true,
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/fish_counting_facilities/MapServer',
+          visible: false,
+          identifiable: false
+        }, {
+          title: 'Electrofishing Sites',
+          cached: true,
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/electrofishing_sites/MapServer',
+          visible: false,
+          identifiable: false
+        }, {
+          title: 'Temperature Logger Sites',
+          cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/temperature_logger_sites/MapServer',
-          cached: true,
           visible: false,
           identifiable: true
         }, {
-          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/stream_order/MapServer',
+          title: 'All Monitoring Sites',
           cached: true,
-          visible: false
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/all_monitoring_sites/MapServer',
+          visible: false,
+          identifiable: false
         }, {
-          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/water_body_ids/MapServer',
+          title: 'Stream Order',
           cached: true,
-          visible: false
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/stream_order/MapServer',
+          visible: false,
+          identifiable: false
+        }, {
+          title: 'Waterbody IDs',
+          cached: true,
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/water_body_ids/MapServer',
+          visible: false,
+          identifiable: false
         }
       ],
       extent: this.fullExtent

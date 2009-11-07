@@ -1,3 +1,9 @@
+# encoding: utf-8
+desc "restart server"
+task :restart do
+  sh "touch #{File.dirname(__FILE__)}/tmp/restart.txt"
+end
+
 namespace :package do
   desc "Package all files"
   task :all => ['package:css', 'package:js']
