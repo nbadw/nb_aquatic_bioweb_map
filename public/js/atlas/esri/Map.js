@@ -1,5 +1,5 @@
 /*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false */
-/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Context */
+/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Services */
 
 Ext.ns('Atlas.esri');
 
@@ -23,12 +23,14 @@ Atlas.esri.Map = function(mapEl, config) {
   this.registerLayerUpdateTriggers();
 
   Ext.each(config.layers, function(layer) {
+    this.availableLayers += 1;
     this.addLayer(layer);
   }, this);
 };
 
 Ext.extend(Atlas.esri.Map, Ext.util.Observable, {
   layers: [],
+  availableLayers: 0,
   loadCount: 0,
   visibleCount: 0,
   updating: false,
@@ -36,8 +38,14 @@ Ext.extend(Atlas.esri.Map, Ext.util.Observable, {
   addLayer: function(layer, index) {
     layer = new Atlas.esri.Layer(layer);
     layer.on('update', this.onLayerUpdated, this);
-    this.layers.push(layer);
-    this.proxy.addLayer(layer.proxy, index);
+    layer.on('load', function(layer) {
+      console.log('loaded ' + layer.url);
+      this.layers.push(layer);
+      this.proxy.addLayer(layer.proxy);
+    }, this);
+    layer.on('error', function(layer) {
+      this.availableLayers -= 1;
+    }, this);
   },
 
   registerProxyEvents: function() {
@@ -45,7 +53,7 @@ Ext.extend(Atlas.esri.Map, Ext.util.Observable, {
       this.fireEvent('load', map);
     });
     dojo.connect(this.proxy, 'onLayerAdd', this, function(layer) {
-      this.fireEvent('layeradd', layer);
+      this.fireEvent('layeradd', layer.proxyOwner);
     });
     dojo.connect(this.proxy, 'onClick', this, function(evt) {
       this.fireEvent('click', evt);

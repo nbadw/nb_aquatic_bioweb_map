@@ -1,5 +1,5 @@
 /*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false */
-/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Context */
+/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Services */
 
 Ext.ns('Atlas.esri');
 
@@ -30,6 +30,16 @@ Atlas.esri.Layer = function(config) {
   dojo.connect(this.proxy, 'onVisibilityChange', this, function(visibility) {
     this.fireEvent('visibilitychange', visibility);
   });
+
+  this.on('error', function(error) {
+    var msg = "error while loading " + this.url + "\n";
+    msg += "  code - " + error.code + "\n";
+    msg += "  details - " + error.message;
+    Ext.each(error.details, function(detail) {
+      msg += "\n  " + detail;
+    });
+    console.log(msg);
+  }, this);
 };
 
 Ext.extend(Atlas.esri.Layer, Ext.util.Observable, {
@@ -76,9 +86,10 @@ Ext.extend(Atlas.esri.Layer, Ext.util.Observable, {
 
   requestLegend: function() {
     Ext.Ajax.request({
-      url: Context.path + '/legends',
+      url: Services.path + '/legends',
       params: { url: this.url },
       method: 'GET',
+      timeout: 7000,
       success: function(response, options) {
         this.legend = Ext.decode(response.responseText);
         this.legendLoaded = true;

@@ -1,5 +1,5 @@
 /*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false */
-/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Context */
+/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Services */
 
 Ext.ns('Atlas');
 
@@ -16,7 +16,7 @@ Atlas.FindPanel = Ext.extend(Ext.Panel, {
     var placeNameStore = new Ext.data.GroupingStore({
       proxy: new Ext.data.HttpProxy({
         method: 'GET',
-        url: Context.path + '/places'
+        url: Services.path + '/places'
       }),
       reader: new Atlas.PlaceReader(),
       autoDestroy: true,

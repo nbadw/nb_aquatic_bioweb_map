@@ -1,5 +1,5 @@
 /*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false */
-/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Context */
+/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Services */
 
 Ext.ns('Atlas');
 
@@ -19,8 +19,7 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
       text: 'Map Contents'
     });
 
-    // create the initial layer list
-    Ext.each(this.map.layers, function(layer) {
+    this.map.on('layeradd', function(layer) {
       this.addLayer(layer);
     }, this);
 
@@ -35,7 +34,7 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
   },
 
   addLayer: function(layer) {
-    if(layer.loaded) {
+    if(layer.proxy.loaded) {
       this.loadLegend(layer);
     } else {
       layer.on('load', this.loadLegend, this);
@@ -55,7 +54,7 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
     this.buildLayerNodes(layer, legend);
     // check to see if everything is ready
     this.legendsLoaded++;
-    if(this.legendsLoaded === this.map.layers.length) {
+    if(this.legendsLoaded === this.map.availableLayers) {
       this.fireEvent('ready');
     }
   },
@@ -273,7 +272,7 @@ Atlas.MapContentsUtil = {
       renderer: this.renderer,
       autoLoad: {
         method: 'GET',
-        url: Context.path + '/info',
+        url: Services.path + '/info',
         params: { url: serviceUrl }
       }
     });

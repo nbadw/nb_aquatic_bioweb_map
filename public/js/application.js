@@ -1,5 +1,5 @@
 /*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false */
-/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Context */
+/*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Services */
 
 /**
  * @depends ./atlas/Core.js
