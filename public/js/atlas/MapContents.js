@@ -227,7 +227,17 @@ Atlas.MapContentsNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
         height: h + 'px',
         width:  w + 'px'
       });
-      iconEl.dom.src = attrs.symbolImage.image_url;
+
+      if(attrs.symbolImage.image_url) {
+        iconEl.dom.src = attrs.symbolImage.image_url;
+      } else {
+        // IE < 8 can't handle inline image data
+        //if(Ext.isIE && !Ext.isIE8) {
+        //  iconEl.dom.src = 'http://localhost:9000/decode?image_data=' + attrs.symbolImage.image_data;
+        //} else {
+        iconEl.dom.src = "data:image/png;base64," + attrs.symbolImage.image_data;
+        //}
+      }
     }
   }
 });

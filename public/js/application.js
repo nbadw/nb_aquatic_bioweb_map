@@ -106,7 +106,7 @@ var Application = {
           cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/regulated_waters/MapServer',
           visible: false,
-          identifiable: false
+          identifiable: true
         },{
           title: 'Surveyed Lakes',
           cached: true,
@@ -154,7 +154,7 @@ var Application = {
           cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/stocked_waters/MapServer',
           visible: false,
-          identifiable: false
+          identifiable: true
         }, {
           title: 'Hydrometric Stations',
           cached: true,
@@ -166,25 +166,25 @@ var Application = {
           cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/groundwater_monitoring_stations/MapServer',
           visible: false,
-          identifiable: false
+          identifiable: true
         }, {
           title: 'Water Chemistry Sites',
           cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/water_chemistry_sites/MapServer',
           visible: false,
-          identifiable: false
+          identifiable: true
         }, {
           title: 'Fish Counting Facilities',
           cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/fish_counting_facilities/MapServer',
           visible: false,
-          identifiable: false
+          identifiable: true
         }, {
           title: 'Electrofishing Sites',
           cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/electrofishing_sites/MapServer',
           visible: false,
-          identifiable: false
+          identifiable: true
         }, {
           title: 'Temperature Logger Sites',
           cached: true,
@@ -196,7 +196,7 @@ var Application = {
           cached: true,
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/all_monitoring_sites/MapServer',
           visible: false,
-          identifiable: false
+          identifiable: true
         }, {
           title: 'Stream Order',
           cached: true,
@@ -335,23 +335,26 @@ var Application = {
   }
 };
 
-Ext.onReady(function() {
+// require esri libraries
+dojo.require("esri.map");
+dojo.require("esri.tasks.identify");
+dojo.require("esri.toolbars.draw");
+dojo.require("esri.toolbars.navigation");
+// using dojo's onload function instead of ExtJS since it might be needed (not sure)
+// by the above require statements to prevent application initialization from
+// happening too early
+dojo.addOnLoad(function() {
   // init the tooltip singleton.  any tag-based quick tips will start working.
   Ext.QuickTips.init();
   // apply config properties to the tooltip singleton
   Ext.apply(Ext.QuickTips.getQuickTip(), {
     trackMouse: true
   });
-  // require esri libraries
-  dojo.require("esri.map");
-  dojo.require("esri.tasks.identify");
-  dojo.require("esri.toolbars.draw");
-  dojo.require("esri.toolbars.navigation");
   // set esri configuration
-  esriConfig.defaults.io.proxyUrl = "/arcgisserver/apis/javascript/proxy/proxy.ashx";
-  esriConfig.defaults.io.alwaysUseProxy = false;
-  esriConfig.defaults.map.zoomDuration = 100;
-  esriConfig.defaults.map.zoomRate = 100;
+  esri.config.defaults.io.proxyUrl = "/arcgisserver/apis/javascript/proxy/proxy.ashx";
+  esri.config.defaults.io.alwaysUseProxy = false;
+  esri.config.defaults.map.zoomDuration = 100;
+  esri.config.defaults.map.zoomRate = 100;
   // define non-standard projections for use in Proj4js
   Proj4js.defs["EPSG:2953"] = "+proj=sterea +lat_0=46.5 +lon_0=-66.5 +k=0.999912 +x_0=2500000 +y_0=7500000 +ellps=GRS80 +units=m +no_defs";
   // start the application
