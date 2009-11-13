@@ -335,21 +335,18 @@ var Application = {
   }
 };
 
-// require esri libraries
-dojo.require("esri.map");
-dojo.require("esri.tasks.identify");
-dojo.require("esri.toolbars.draw");
-dojo.require("esri.toolbars.navigation");
-// using dojo's onload function instead of ExtJS since it might be needed (not sure)
-// by the above require statements to prevent application initialization from
-// happening too early
-dojo.addOnLoad(function() {
+Ext.onReady(function() {
   // init the tooltip singleton.  any tag-based quick tips will start working.
   Ext.QuickTips.init();
   // apply config properties to the tooltip singleton
   Ext.apply(Ext.QuickTips.getQuickTip(), {
     trackMouse: true
   });
+  // require esri libraries
+  dojo.require("esri.map");
+  dojo.require("esri.tasks.identify");
+  dojo.require("esri.toolbars.draw");
+  dojo.require("esri.toolbars.navigation");
   // set esri configuration
   esri.config.defaults.io.proxyUrl = "/arcgisserver/apis/javascript/proxy/proxy.ashx";
   esri.config.defaults.io.alwaysUseProxy = false;
