@@ -283,7 +283,9 @@ Atlas.MapContentsUtil = {
       autoLoad: {
         method: 'GET',
         url: Services.path + '/info',
-        params: { url: serviceUrl }
+        params: { 
+          url: serviceUrl
+        }
       }
     });
   }

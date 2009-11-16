@@ -87,9 +87,11 @@ Ext.extend(Atlas.esri.Layer, Ext.util.Observable, {
   requestLegend: function() {
     Ext.Ajax.request({
       url: Services.path + '/legends',
-      params: { url: this.url },
+      params: {
+        url: this.url,
+        image_return_url: (Ext.isIE && !Ext.isIE8)
+      },
       method: 'GET',
-      timeout: 7000,
       success: function(response, options) {
         this.legend = Ext.decode(response.responseText);
         this.legendLoaded = true;
@@ -105,7 +107,3 @@ Ext.extend(Atlas.esri.Layer, Ext.util.Observable, {
     });
   }
 });
-
-  /*
-Layer Events:
-   */
