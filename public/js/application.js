@@ -95,12 +95,12 @@ var Application = {
           url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/watersheds_level_01_boundary_lines/MapServer',
           visible: true,
           identifiable: false
-//        }, {
-//          title: 'Place Names',
-//          cached: true,
-//          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/place_names/MapServer',
-//          visible: true,
-//          identifiable: false
+        }, {
+          title: 'Place Names',
+          cached: true,
+          url: 'http://river.nbwaters.unb.ca/ArcGIS/rest/services/bioweb/place_names/MapServer',
+          visible: true,
+          identifiable: false
         }, {
           title: 'Regulated Waters',
           cached: true,
