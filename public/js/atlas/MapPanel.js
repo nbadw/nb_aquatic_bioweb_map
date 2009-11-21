@@ -77,14 +77,14 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
       scope: this
     } //,
 
-//    {
-//      id: 'print-pdf',
-//      icon: './images/page_white_acrobat.png',
-//      tooltip: 'Export Map as PDF',
-//      scale: 'medium',
-//      handler: this.showExportPdfWindow,
-//      scope: this
-//    }
+    //    {
+    //      id: 'print-pdf',
+    //      icon: './images/page_white_acrobat.png',
+    //      tooltip: 'Export Map as PDF',
+    //      scale: 'medium',
+    //      handler: this.showExportPdfWindow,
+    //      scope: this
+    //    }
     ];
 
     this.bbar = [
@@ -105,7 +105,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     {
       id: 'map-status',
       xtype: 'tbtext',
-      text: 'Loading...'
+      text: 'Initializing'
     },
     '->',
     '-',
@@ -177,39 +177,24 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     // for access to ext-style events, we'll need to access Atlas.esri.Map instance
     var map     = this.map.proxyOwner;
     var status  = this.mapStatus.getEl();
-    var updater = new Ext.util.TaskRunner();
-    var task    = {
-      run: function() {
-        var re = /\.{3}$/;
-        var text = status.dom.innerHTML;
-        if(re.test(text)) {
-          text = text.replace(re, '');
-        } else {
-          text += '.';
-        }
-        status.update(text);
-      },
-      interval: 100
-    };
 
-    var showStatus = function() {
+    map.on('beforeupdate', function() {
+      status.update('Loading');
       status.show();
-      updater.start(task);
-    };
-
-    var hideStatus = function() {
-      status.hide();
-      updater.stop(task);
-    };
-
-    if(map.updating) {
-      showStatus.call();
-    } else {
-      hideStatus.call();
-    }
+    });
     
-    map.on('beforeupdate', showStatus);
-    map.on('update', hideStatus);
+    map.on('progressupdate', function(map, tilesLoaded, totalTiles) {
+      var percent = Math.round(tilesLoaded / totalTiles * 100);
+      if(percent >= 0 && percent <= 100) {
+        status.update('Loading (' + percent + '%)');
+      } else {
+        status.update('Loading...');
+      }
+    });
+
+    map.on('update', function() {
+      status.hide();
+    });
   },
 
   showFindWindow: function() {
@@ -328,7 +313,7 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     return esri.geometry.getLength(
       new esri.geometry.Point(p0.x, p0.y, this.targetSRS),
       new esri.geometry.Point(p1.x, p1.y, this.targetSRS)
-    );
+      );
   },
 
   clearMeasurement: function() {
@@ -411,38 +396,20 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
 
   enableIdentifyTool: function() {
     var map = this.map.proxyOwner;
-    map.on('click', this.doIdentify, this, { 
+    map.on('click', this.doIdentify, this, {
       single: true
     });
   },
 
   disableIdentifyTool: function() {
-    this.identifyWindow.close();
-    this.map.graphics.clear();
-    this.map.proxyOwner.un('click', this.identifyWindowCloseHandler, this);
-    if(this.identify.pressed) {
-      this.enableIdentifyTool();
+    if(this.identifyWindow) {
+      this.identifyWindow.close();
     }
+    this.map.graphics.clear();
   },
 
   doIdentify: function(evt) {
     var identifyPanel = new Atlas.IdentifyPanel();
-    identifyPanel.on('geometryselected', function(result, geometry) {
-      this.map.graphics.clear();
-      var graphic = new esri.Graphic(
-        geometry,
-        new esri.symbol.SimpleFillSymbol(
-          esri.symbol.SimpleFillSymbol.STYLE_SOLID,
-          new esri.symbol.SimpleLineSymbol(
-            esri.symbol.SimpleLineSymbol.STYLE_SOLID,
-            new dojo.Color([255,0,0]), 
-            1
-          ),
-          new dojo.Color([255,255,0,0.5])
-        )
-      );
-      this.map.graphics.add(graphic);
-    }, this);
 
     this.identifyWindow = new Ext.Window({
       layout: 'fit',
@@ -466,15 +433,26 @@ Atlas.MapPanel = Ext.extend(Ext.Panel, {
     this.identifyWindow.on('show', function() {
       identifyPanel.doIdentify(map, evt.mapPoint);
     });
-
-    this.identifyWindow.on('close', this.disableIdentifyTool, this);
-
-    this.identifyWindowCloseHandler = function() {
-      this.identifyWindow.close();
-    };
-    this.map.proxyOwner.on('click', this.identifyWindowCloseHandler, this);
+    this.identifyWindow.on('close', function() {
+      this.identifyWindow.destroy();
+      this.identifyWindow = null;
+    }, this);
+    this.map.proxyOwner.on('click', this.refreshIdentifyWindow, this, {
+      single: true
+    });
 
     this.identifyWindow.show();
+  },
+
+  refreshIdentifyWindow: function(evt) {
+    // refresh sometimes fires when it should be disabled and even when the listener has been removed
+    // so check to see if identify is enabled before proceeding with logic
+    if(Ext.getCmp('identify').pressed) {
+      if(this.identifyWindow) {
+        this.identifyWindow.close();
+      }
+      this.doIdentify(evt);
+    }
   },
 
   showExportPdfWindow: function() {

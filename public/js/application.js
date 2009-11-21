@@ -15,10 +15,10 @@ var Application = {
   init: function() {
     console.log('initializing map application ui');
     this.fullExtent = new esri.geometry.Extent({
-      xmin: -71.6823103005143,
-      ymin: 42.6758057421875,
-      xmax: -59.9489118630143,
-      ymax: 50.2234131640625,
+      xmin: -69.07992382590493,
+      ymin: 44.36495369140625,
+      xmax: -63.31759472434243,
+      ymax: 48.30355232421875,
       spatialReference: { wkid: 4326 }
     });
 

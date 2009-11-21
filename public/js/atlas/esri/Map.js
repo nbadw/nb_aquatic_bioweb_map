@@ -13,38 +13,53 @@ Atlas.esri.Map = function(mapEl, config) {
   this.addEvents(
     'load',
     'layeradd',
+    'layersloaded',
     'beforeupdate',
     'update',
     'click',
-    'extentchange'
-  );
-  
+    'extentchange',
+    'progressupdate'
+    );
   this.registerProxyEvents();
-  this.registerLayerUpdateTriggers();
 
+  this.totalLayers = config.layers.length;
   Ext.each(config.layers, function(layer) {
-    this.availableLayers += 1;
     this.addLayer(layer);
   }, this);
 };
 
 Ext.extend(Atlas.esri.Map, Ext.util.Observable, {
   layers: [],
-  availableLayers: 0,
-  loadCount: 0,
-  visibleCount: 0,
   updating: false,
+  // bookkeeping variables
+  totalLayers: 0,
+  layersLoaded: 0,
+  updateCount: 0,
+  totalTileCount: 0,
+  visibleCount: 0,
+  working: false,
 
   addLayer: function(layer, index) {
     layer = new Atlas.esri.Layer(layer);
-    layer.on('update', this.onLayerUpdated, this);
+    
     layer.on('load', function(layer) {
-      console.log('loaded ' + layer.url);
       this.layers.push(layer);
       this.proxy.addLayer(layer.proxy);
+      if(layer.proxy.visible) {
+        this.visibleCount++;
+      }
+      this.registerLayerListeners(layer);
+      this.onLayerLoaded();
     }, this);
+
     layer.on('error', function(layer) {
-      this.availableLayers -= 1;
+      this.onLayerLoaded();
+    }, this);
+
+    this.on('layersloaded', function() {
+      Ext.each(this.layers, function(layer) {
+        this.registerLayerListeners(layer);
+      }, this)
     }, this);
   },
 
@@ -63,32 +78,67 @@ Ext.extend(Atlas.esri.Map, Ext.util.Observable, {
     });
   },
 
-  registerLayerUpdateTriggers: function() {
-    Ext.each(['onZoomStart', 'onPanStart'], function(triggerEvent) {
-      dojo.connect(this.proxy, triggerEvent, this, function() {
-        this.loadCount = 0;
-        this.visibleCount = this.countVisibleLayers();
-        this.updating = true;
-        this.fireEvent('beforeupdate');
-      });
+  registerLayerListeners: function(layer) {
+    layer.on('update', this.onLayerUpdated, this);
+
+    layer.on('visibilitychange', function(visibility) {
+      if(visibility) {
+        this.visibleCount++;
+      } else {
+        this.visibleCount--;
+      }
+    }, this);
+
+    Ext.each(['tileload', 'tileerror'], function(event) {
+      layer.on(event, function(layer, img) {
+        if(!this.working) {
+          this.totalTileCount = this.countTilesToLoad();
+          if(this.totalTileCount === 0) {
+            return;
+          }
+          this.working = true;
+          this.fireEvent('beforeupdate', this);
+        }
+        var remainingTiles = this.countTilesToLoad();
+        if(remainingTiles < 1) {
+          this.working = false;
+          this.fireUpdate();
+        }
+        this.fireProgressUpdate(remainingTiles);
+      }, this);
     }, this);
   },
 
-  onLayerUpdated: function() {
-    this.loadCount++;
-    if(this.loadCount === this.visibleCount) {
-      this.updating = false;
-      this.fireEvent('update');
+  onLayerLoaded: function() {
+    this.layersLoaded++;
+    if(this.totalLayers === this.layersLoaded) {
+      this.fireEvent('layersloaded');
     }
   },
 
-  countVisibleLayers: function() {
+  fireProgressUpdate: function(remainingTiles) {
+    var loaded  = this.totalTileCount - remainingTiles;
+    this.fireEvent('progressupdate', this, loaded, this.totalTileCount);
+  },
+
+  countTilesToLoad: function() {
     var count = 0;
     Ext.each(this.layers, function(layer) {
-      if(layer.proxy.visible) {
-        count += 1;
-      }
+      count += (layer.tileCount || 0);
     });
     return count;
+  },
+
+  onLayerUpdated: function() {
+    this.updateCount++;
+    if(this.updateCount === this.visibleCount) {
+      this.fireUpdate();
+    }
+  },
+
+  fireUpdate: function() {
+    this.updateCount = 0;
+    this.updating = false;
+    this.fireEvent('update', this);
   }
 });

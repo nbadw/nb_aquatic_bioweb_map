@@ -13,7 +13,17 @@ Atlas.esri.Layer = function(config) {
     this.identifiable = config.identifiable;
   }
 
-  this.addEvents('error', 'load', 'opacitychange', 'update', 'visibilitychange', 'legend');
+  this.addEvents(
+    'error',
+    'load',
+    'opacitychange',
+    'beforeupdate',
+    'update',
+    'visibilitychange',
+    'legend',
+    'tileload',
+    'tileerror'
+  );
 
   dojo.connect(this.proxy, 'onError', this, function(error) {
     this.fireEvent('error', error);
@@ -30,6 +40,23 @@ Atlas.esri.Layer = function(config) {
   dojo.connect(this.proxy, 'onVisibilityChange', this, function(visibility) {
     this.fireEvent('visibilitychange', visibility);
   });
+  // unsupported method to fire updates on tile loading status
+  if(config.cached) {
+    this.updateImagesWithoutNotify = this.proxy._updateImages;
+    this.proxy._updateImages = this.updateImagesWithNotify;
+    dojo.connect(this.proxy, "_tileLoadHandler", this, function(evt) {
+      var img = evt.currentTarget;
+      var layer = this;
+      layer.tileCount--;
+      this.fireEvent('tileload', this, img);
+    });
+    dojo.connect(this.proxy, "_tileErrorHandler", this, function(evt) {
+      var img = evt.currentTarget;
+      var layer = this;
+      layer.tileCount--;
+      this.fireEvent('tileerror', this, img);
+    });
+  }
 
   this.on('error', function(error) {
     var msg = "error while loading " + this.url + "\n";
@@ -105,5 +132,17 @@ Ext.extend(Atlas.esri.Layer, Ext.util.Observable, {
       },
       scope: this
     });
+  },
+
+  // * not to be used by dynamic services
+  updateImagesWithNotify: function(rect) {
+    var atlasLayer = this.proxyOwner;
+    atlasLayer.updateImagesWithoutNotify.call(this, rect);
+    if(!this._patchIE) {
+      atlasLayer.tileCount = this._loadingList.count;
+    } else {
+      atlasLayer.tileCount = 0; // IE6 can't be notified about tiles
+    }
+    atlasLayer.fireEvent('beforeupdate', atlasLayer);
   }
 });

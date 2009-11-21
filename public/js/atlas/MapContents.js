@@ -19,14 +19,17 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
       text: 'Map Contents'
     });
 
-    this.map.on('layeradd', function(layer) {
-      this.addLayer(layer);
-    }, this);
-
     this.addEvents('ready');
     Atlas.MapContents.superclass.initComponent.call(this);
 
     var sorter = new Atlas.MapContentsTreeSorter(this);
+
+    this.map.on('layersloaded', function() {
+      this.totalLayers = this.map.layers.length;
+      Ext.each(this.map.layers, function(layer) {
+        this.addLayer(layer);
+      }, this);
+    }, this);
 
     this.on('checkchange', function(node, checked) {
       this.toggleLayerVisible(node, checked);
@@ -51,10 +54,14 @@ Atlas.MapContents = Ext.extend(Ext.tree.TreePanel, {
   },
 
   layerReady: function(layer, legend) {
-    this.buildLayerNodes(layer, legend);
+    try {
+      this.buildLayerNodes(layer, legend);
+    } catch(err) {
+      console.log(err);
+    }
     // check to see if everything is ready
     this.legendsLoaded++;
-    if(this.legendsLoaded === this.map.availableLayers) {
+    if(this.legendsLoaded === this.totalLayers) {
       this.fireEvent('ready');
     }
   },
