@@ -1,4 +1,4 @@
-/*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false */
+/*jslint white: false, onevar: false, browser: true, eqeqeq: true, bitwise: true, plusplus: false, nomen: false */
 /*global window,Ext,esri,esriConfig,dojo,Proj4js,Atlas,Application,Services */
 
 Ext.ns('Atlas.esri');

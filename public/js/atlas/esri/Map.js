@@ -59,7 +59,7 @@ Ext.extend(Atlas.esri.Map, Ext.util.Observable, {
     this.on('layersloaded', function() {
       Ext.each(this.layers, function(layer) {
         this.registerLayerListeners(layer);
-      }, this)
+      }, this);
     }, this);
   },
 
